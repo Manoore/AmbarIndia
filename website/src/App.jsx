@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 
 const menu = [
   ['✦', 'Guest favourite', 'Chicken Tikka Masala', 'Lightly broiled chicken in a savoury tomato, onion, and cream sauce.', '$22.99'],

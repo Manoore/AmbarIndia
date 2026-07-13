@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 
 const fallbackLocations = [
   { id: 'clifton', name: 'Ambar India Clifton', address: '350 Ludlow Ave, Cincinnati, OH 45220', services: ['dine-in', 'pickup', 'delivery', 'catering'] },
