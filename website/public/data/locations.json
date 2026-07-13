@@ -1,0 +1,14 @@
+[
+  {
+    "id": "clifton",
+    "name": "Ambar India Clifton",
+    "address": "350 Ludlow Ave, Cincinnati, OH 45220",
+    "phone": "513-281-7000",
+    "services": ["dine-in", "pickup", "delivery", "catering"],
+    "hours": { "sunday": "10:30 AM–9:30 PM", "weekday": "10:30 AM–10:00 PM", "saturday": "10:30 AM–10:00 PM" }
+  },
+  { "id": "downtown", "name": "Ambar India Downtown", "address": "To be configured", "phone": "", "services": ["pickup", "delivery", "lunch"], "hours": {} },
+  { "id": "events", "name": "Ambar India Events", "address": "To be configured", "phone": "", "services": ["catering", "private-events"], "hours": {} },
+  { "id": "north", "name": "Ambar India North", "address": "To be configured", "phone": "", "services": ["dine-in", "pickup"], "hours": {} },
+  { "id": "west", "name": "Ambar India West", "address": "To be configured", "phone": "", "services": ["pickup", "delivery"], "hours": {} }
+]

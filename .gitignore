@@ -1,0 +1,18 @@
+# Flutter
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+build/
+.idea/
+.vscode/
+
+# JavaScript / Vite
+website/node_modules/
+website/dist/
+website/vite-output.log
+website/vite-error.log
+
+# OS files
+Thumbs.db
+.DS_Store

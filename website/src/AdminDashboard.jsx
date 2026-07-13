@@ -1,0 +1,43 @@
+import { useEffect, useMemo, useState } from 'react';
+
+const fallbackLocations = [
+  { id: 'clifton', name: 'Ambar India Clifton', address: '350 Ludlow Ave, Cincinnati, OH 45220', services: ['dine-in', 'pickup', 'delivery', 'catering'] },
+  { id: 'downtown', name: 'Ambar India Downtown', address: 'To be configured', services: ['pickup', 'delivery', 'lunch'] },
+  { id: 'events', name: 'Ambar India Events', address: 'To be configured', services: ['catering', 'private-events'] },
+  { id: 'north', name: 'Ambar India North', address: 'To be configured', services: ['dine-in', 'pickup'] },
+  { id: 'west', name: 'Ambar India West', address: 'To be configured', services: ['pickup', 'delivery'] },
+];
+const demoOrders = [
+  { id: 'ORD-1042', guest: 'Sarah M.', location: 'Clifton', type: 'Pickup', total: '$42.97', status: 'New' },
+  { id: 'ORD-1041', guest: 'Daniel R.', location: 'Clifton', type: 'Delivery', total: '$67.85', status: 'Preparing' },
+  { id: 'ORD-1040', guest: 'Maya K.', location: 'Downtown', type: 'Pickup', total: '$29.98', status: 'Ready' },
+];
+
+export default function AdminDashboard() {
+  const [locations, setLocations] = useState(fallbackLocations);
+  const [activeLocation, setActiveLocation] = useState('clifton');
+  const [section, setSection] = useState('Overview');
+  const [notice, setNotice] = useState('Demo mode: changes are kept only in this browser until database setup.');
+  const [orders, setOrders] = useState(demoOrders);
+  const [services, setServices] = useState(fallbackLocations[0].services);
+
+  useEffect(() => {
+    fetch('/data/locations.json').then((response) => response.ok ? response.json() : Promise.reject()).then((data) => { setLocations(data); setServices(data[0]?.services ?? []); setNotice('Loaded JSON demo data. Ready for front-end testing.'); }).catch(() => {});
+  }, []);
+
+  const current = useMemo(() => locations.find((location) => location.id === activeLocation) ?? locations[0], [activeLocation, locations]);
+  const toggleService = (service) => setServices((previous) => previous.includes(service) ? previous.filter((item) => item !== service) : [...previous, service]);
+  const updateOrder = (id, status) => setOrders((previous) => previous.map((order) => order.id === id ? { ...order, status } : order));
+  const menu = ['Overview', 'Locations', 'Menu & availability', 'Orders', 'Offers & rewards', 'Team settings'];
+
+  return <div className="admin-shell"><aside className="admin-sidebar"><a className="brand" href="/">AMBAR <span>DIRECT</span><small>MANAGER PORTAL</small></a><p className="admin-label">RESTAURANT GROUP</p><select value={activeLocation} onChange={(event) => { setActiveLocation(event.target.value); const found = locations.find((location) => location.id === event.target.value); setServices(found?.services ?? []); }}><option value="all">All locations</option>{locations.map((location) => <option key={location.id} value={location.id}>{location.name.replace('Ambar India ', '')}</option>)}</select><nav className="admin-nav">{menu.map((item) => <button key={item} className={section === item ? 'active' : ''} onClick={() => setSection(item)}>{item}</button>)}</nav><a className="admin-back" href="/">← View customer website</a></aside><main className="admin-main"><header className="admin-header"><div><p className="eyebrow">Manager portal</p><h1>{section}</h1></div><button className="admin-save" onClick={() => setNotice('Saved locally. Connect a production database to make this permanent.')}>Save changes</button></header><p className="admin-notice">{notice}</p>{section === 'Overview' && <Overview orders={orders} locations={locations} />}{section === 'Locations' && <LocationSettings location={current} services={services} onToggle={toggleService} />}{section === 'Menu & availability' && <MenuManager />}{section === 'Orders' && <OrderManager orders={orders} onUpdate={updateOrder} />}{section === 'Offers & rewards' && <Offers />}{section === 'Team settings' && <Team />}</main></div>;
+}
+
+function Overview({ orders, locations }) { return <><section className="stat-grid"><Stat title="Today’s sales" value="$1,248.60" note="↑ 12% vs last Tuesday" /><Stat title="Orders today" value="43" note="7 currently active" /><Stat title="Rewards members" value="1,284" note="+24 this month" /><Stat title="Locations active" value={`${locations.length}`} note="Service settings monitored" /></section><section className="admin-card"><div className="card-heading"><div><h2>Live orders</h2><p>Keep every guest moving through service.</p></div><button>View all orders</button></div><OrderTable orders={orders} /></section></>; }
+function Stat({ title, value, note }) { return <article className="stat"><p>{title}</p><strong>{value}</strong><small>{note}</small></article>; }
+function LocationSettings({ location, services, onToggle }) { const options = ['dine-in', 'pickup', 'delivery', 'catering', 'private-events', 'lunch']; return <section className="admin-card"><div className="card-heading"><div><h2>{location?.name ?? 'All locations'}</h2><p>{location?.address ?? 'Configure group-wide defaults'}</p></div><span className="status-dot">Open</span></div><h3>Services available at this location</h3><div className="service-toggles">{options.map((service) => <label key={service}><input type="checkbox" checked={services.includes(service)} onChange={() => onToggle(service)} /><span>{service.replace('-', ' ')}</span></label>)}</div><div className="form-grid"><label>Phone number<input defaultValue={location?.phone ?? ''} placeholder="Add phone number" /></label><label>Order-ready time<select defaultValue="25"><option>15 minutes</option><option>25 minutes</option><option>35 minutes</option><option>45 minutes</option></select></label><label>Monday–Friday hours<input defaultValue={location?.hours?.weekday ?? '10:30 AM – 10:00 PM'} /></label><label>Delivery zone<input placeholder="Add neighbourhoods or postal codes" /></label></div></section>; }
+function MenuManager() { const dishes = [['Chicken Tikka Masala','$22.99','Available'],['Saag Paneer','$22.99','Available'],['Garlic Naan','$7.99','Available'],['Vegetable Samosa','$9.89','Sold out']]; return <section className="admin-card"><div className="card-heading"><div><h2>Menu availability</h2><p>Switch items on or off without changing the core menu.</p></div><button className="admin-save">Add menu item</button></div><div className="menu-table">{dishes.map(([name, price, availability]) => <div key={name}><b>{name}</b><span>{price}</span><label className={availability === 'Available' ? 'available' : 'sold-out'}><input type="checkbox" defaultChecked={availability === 'Available'} />{availability}</label><button>Edit</button></div>)}</div></section>; }
+function OrderManager({ orders, onUpdate }) { return <section className="admin-card"><div className="card-heading"><div><h2>Order queue</h2><p>Manage direct orders across your locations.</p></div><button>Export orders</button></div><OrderTable orders={orders} onUpdate={onUpdate} /></section>; }
+function OrderTable({ orders, onUpdate }) { return <div className="order-table"><div className="order-head"><span>Order</span><span>Guest</span><span>Location</span><span>Type</span><span>Total</span><span>Status</span></div>{orders.map((order) => <div className="order-row" key={order.id}><b>{order.id}</b><span>{order.guest}</span><span>{order.location}</span><span>{order.type}</span><span>{order.total}</span>{onUpdate ? <select value={order.status} onChange={(event) => onUpdate(order.id, event.target.value)}><option>New</option><option>Preparing</option><option>Ready</option><option>Completed</option></select> : <em className={order.status.toLowerCase()}>{order.status}</em>}</div>)}</div>; }
+function Offers() { return <section className="admin-card"><div className="card-heading"><div><h2>Offers and rewards</h2><p>Create repeat visits without giving up marketplace commissions.</p></div><button className="admin-save">Create offer</button></div><div className="offer-grid"><article><span>ACTIVE</span><h3>Free Garlic Naan</h3><p>With orders over $35. Valid all locations.</p></article><article><span>DRAFT</span><h3>Lunch rewards boost</h3><p>Double points, Monday–Friday, 11 AM–2 PM.</p></article></div></section>; }
+function Team() { return <section className="admin-card"><div className="card-heading"><div><h2>Team access</h2><p>Give each member only the permissions they need.</p></div><button className="admin-save">Invite team member</button></div><div className="team-row"><b>Owner</b><span>Full group access</span><span>owner@ambarindia.com</span></div><div className="team-row"><b>Clifton manager</b><span>Clifton menus & orders</span><span>manager@ambarindia.com</span></div></section>; }
