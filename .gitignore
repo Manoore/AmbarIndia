@@ -12,6 +12,7 @@ website/node_modules/
 website/dist/
 website/vite-output.log
 website/vite-error.log
+.tools/
 
 # OS files
 Thumbs.db

@@ -12,10 +12,11 @@ const locations = [
 ];
 
 function Brand() { return <a className="brand" href="#top">AMBAR <span>INDIA</span><small>RESTAURANT</small></a>; }
+function ChefGuide() { return <a className="chef-guide" href="#menu" aria-label="Explore Ambar India menu"><img src="/assets/ambar-chef.png" alt="Ambar India chef reading the menu" /><span>Chef's picks<br /><b>Explore the menu</b></span></a>; }
 
 export default function App() {
   const [open, setOpen] = useState(false);
-  return <><div className="announcement">Order directly from Ambar India · Save on fees · Earn rewards</div>
+  return <><div className="announcement">Order directly from Ambar India · Save on fees · Earn rewards</div><ChefGuide />
     <header className="site-header"><Brand /><nav><a href="#story">Our story</a><a href="#menu">Menu</a><a href="#catering">Catering</a><a href="#visit">Visit us</a></nav><button className="outline-button" onClick={() => setOpen(true)}>Order online <b>→</b></button></header>
     <main id="top">
       <section className="hero"><div className="hero-shade" /><div className="hero-copy"><p className="eyebrow">Cincinnati's home for Northern Indian cuisine</p><h1>A table full of<br /><em>India's warmth.</em></h1><p>From our tandoor to your table, Ambar India serves vibrant curries, fragrant basmati rice, handmade breads, and the generous hospitality of Northern India.</p><div className="hero-actions"><button className="primary-button" onClick={() => setOpen(true)}>Start your order <span>→</span></button><a className="light-link" href="#story">Discover Ambar <span>↓</span></a></div></div><div className="hero-badge"><span>Since</span><b>AMBAR</b><span>Authentic flavours · warmly served</span></div></section>
