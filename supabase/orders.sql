@@ -4,6 +4,9 @@
 alter table public.orders add column if not exists order_reference text;
 alter table public.orders add column if not exists access_token uuid not null default gen_random_uuid();
 alter table public.orders add column if not exists payment_method text not null default 'pay-at-counter';
+alter table public.orders add column if not exists payment_status text not null default 'pending';
+alter table public.orders add column if not exists amount_tendered numeric(10,2);
+alter table public.orders add column if not exists order_source text not null default 'online';
 alter table public.orders add column if not exists kitchen_note text not null default '';
 alter table public.orders add column if not exists estimated_ready_at timestamptz;
 create unique index if not exists orders_order_reference_key on public.orders(order_reference) where order_reference is not null;
