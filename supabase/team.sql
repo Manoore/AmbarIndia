@@ -10,6 +10,8 @@ as $$
   select exists (select 1 from public.staff_profiles where user_id = auth.uid() and role = 'owner');
 $$;
 
+alter table public.staff_profiles add column if not exists screen_access jsonb not null default '[]'::jsonb;
+
 -- A staff profile is created as a cashier when a team member first activates
 -- their secure email sign-in. Owners can then assign their final role and locations.
 create or replace function public.create_staff_profile()
@@ -19,8 +21,8 @@ security definer
 set search_path = public
 as $$
 begin
-  insert into public.staff_profiles (user_id, email, role)
-  values (new.id, lower(new.email), 'cashier')
+  insert into public.staff_profiles (user_id, email, role, screen_access)
+  values (new.id, lower(new.email), 'cashier', '["Counter / POS"]')
   on conflict (user_id) do nothing;
   return new;
 end;
