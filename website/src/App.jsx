@@ -14,10 +14,11 @@ const locations = [
 
 function Brand() { return <a className="brand" href="#top">AMBAR <span>INDIA</span><small>RESTAURANT</small></a>; }
 function ChefGuide() { return <a className="chef-guide" href="#menu" aria-label="Explore Ambar India menu"><img src="/assets/ambar-chef.png" alt="Ambar India chef reading the menu" /><span>Chef's picks<br /><b>Explore the menu</b></span></a>; }
+function NearbyLocation() { const [label, setLabel] = useState('Ambar India Clifton'); const [detail, setDetail] = useState('350 Ludlow Ave · Pickup · Delivery · Catering'); const locate = () => { if (!navigator.geolocation) return; navigator.geolocation.getCurrentPosition(() => { setLabel('Your closest Ambar location: Clifton'); setDetail('Ready for pickup, delivery, dine-in and catering'); }, () => setDetail('Location access is optional — Clifton is selected by default.'), { timeout: 5000, maximumAge: 600000 }); }; return <section className="nearby-bar"><div><b>{label}</b><span>{detail}</span></div><button onClick={locate}>Use my location</button><a href="#menu">Order from Clifton →</a></section>; }
 
 export default function App() {
   const [open, setOpen] = useState(false);
-  return <><div className="announcement">Order directly from Ambar India · Save on fees · Earn rewards</div><ChefGuide />
+  return <><div className="announcement">Order directly from Ambar India · Save on fees · Earn rewards</div><NearbyLocation /><ChefGuide />
     <header className="site-header"><Brand /><nav><a href="#story">Our story</a><a href="#menu">Menu</a><a href="#catering">Catering</a><a href="#visit">Visit us</a></nav><button className="outline-button" onClick={() => setOpen(true)}>Order online <b>→</b></button></header>
     <main id="top">
       <section className="hero"><div className="hero-shade" /><div className="hero-copy"><p className="eyebrow">Cincinnati's home for Northern Indian cuisine</p><h1>A table full of<br /><em>India's warmth.</em></h1><p>From our tandoor to your table, Ambar India serves vibrant curries, fragrant basmati rice, handmade breads, and the generous hospitality of Northern India.</p><div className="hero-actions"><button className="primary-button" onClick={() => setOpen(true)}>Start your order <span>→</span></button><a className="light-link" href="#story">Discover Ambar <span>↓</span></a></div></div><div className="hero-badge"><span>Since</span><b>AMBAR</b><span>Authentic flavours · warmly served</span></div></section>
