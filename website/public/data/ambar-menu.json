@@ -1,0 +1,464 @@
+{
+  "restaurant": "Ambar India Restaurant",
+  "address": "350 Ludlow Ave, Cincinnati, OH",
+  "source_url": "https://ambarindia.net/menu",
+  "note": "No per-dish photos are published on the source page; only the restaurant logo image exists site-wide.",
+  "categories": [
+    {
+      "category": "Lunch Appetizers",
+      "hours": "10:45 AM - 2:30 PM",
+      "items": [
+        {"name": "Aloo Tikki", "price": 8.49, "description": "Mildly spiced minced deep fried potatoes"},
+        {"name": "Assorted Veggie Platter", "price": 12.99, "description": "A sample of vegetarian appetizers"},
+        {"name": "Chane Ki Chat", "price": 8.99, "description": "A tangy sweet blend of chick peas, fruit, and vegetables sprinkled with black Indian salt, served chilled"},
+        {"name": "Chicken Dippers", "price": 12.99, "description": "Traditional boneless fried chicken (4-5 pieces)"},
+        {"name": "Chicken Pakora", "price": 13.99, "description": "Tender boneless batter fried chicken marinated with spices"},
+        {"name": "Keema Samosa", "price": 12.99, "description": "Two mildly spiced beef filled pastries"},
+        {"name": "Mattu Special Chicken", "price": 13.99, "description": "Special boneless chicken tandoori tossed with lightly spiced onions, stuffed in a pastry and deep fried"},
+        {"name": "Mixed Platter", "price": 12.99, "description": "A sample of appetizers including chicken pakora and paneer pakora"},
+        {"name": "Paneer Pakora", "price": 12.99, "description": "Homemade cheese cubes lightly spiced and batter fried"},
+        {"name": "Papri Chat", "price": 9.99, "description": "A tangy sweet blend of chick peas, potatoes, papadies, a touch of yogurt with black Indian salt, served chilled"},
+        {"name": "Vegetable Pakora", "price": 8.99, "description": "Assorted fresh fritters"},
+        {"name": "Vegetable Samosa", "price": 9.89, "description": "Two deep fried crisp pastries stuffed with mildly spiced potatoes and green peas"},
+        {"name": "Veggie Mattu", "price": 13.99, "description": "Homemade cheese tossed with lightly spiced onions and bell peppers, stuffed and fried"},
+        {"name": "Onion Bhaji", "price": 8.99, "description": "Lightly spiced onion pakoras"},
+        {"name": "Papadam", "price": 2.99, "description": "3 pieces, crisp spicy lentil wafer"}
+      ]
+    },
+    {
+      "category": "Lunch Soups & Salads",
+      "hours": "10:45 AM - 2:30 PM",
+      "items": [
+        {"name": "House Salad", "price": 8.49, "description": "Freshly made tossed salad with herbs"},
+        {"name": "Chili and Onions", "price": 4.99, "description": "Lightly seasoned"},
+        {"name": "Dal Soup", "price": 6.99, "description": "Deliciously mild lentil soup"},
+        {"name": "Tomato & Onion", "price": 4.99, "description": "Fresh tomatoes and onions salad"},
+        {"name": "Coconut Soup", "price": 7.99, "description": "Shredded coconut, cream, and sweet spice"}
+      ]
+    },
+    {
+      "category": "Lunch Specialties",
+      "hours": "10:45 AM - 2:30 PM",
+      "note": "No substitutions please",
+      "items": [
+        {"name": "Chicken Choley", "price": 24.59, "description": "Chickpeas cooked with chicken, served with bhatura (fried bread) and rice"},
+        {"name": "Lamb Choley", "price": 28.99, "description": "Chickpeas cooked with lamb, served with bhatura (fried bread) and rice"},
+        {"name": "Lamb & Shrimp Curry", "price": 28.99, "description": "Mildly spiced shrimp and lamb in curry sauce served with nan and rice"},
+        {"name": "Keema Matar", "price": 24.99, "description": "Choice of ground beef cooked with green peas, served with rice"}
+      ]
+    },
+    {
+      "category": "Lunch Meal Deal Combos",
+      "hours": "10:45 AM - 2:30 PM",
+      "note": "Comes with rice, bread, and a drink; no substitutions",
+      "items": [
+        {"name": "Chicken Tikka Masala - Lunch", "price": "20.99+", "description": "Lunch size entree (12 oz). Lightly broiled chicken cooked in a savory tomato, onion, and cream sauce"},
+        {"name": "Butter Chicken - Lunch", "price": "20.99+", "description": "Lunch size entree (12 oz). Marinated chicken pieces cooked in tomato cream sauce"},
+        {"name": "Chicken Curry - Lunch", "price": "20.99+", "description": "Lunch size entree (12 oz). Mildly spiced chicken cooked in curry sauce"},
+        {"name": "Chicken Tikka Saag - Lunch", "price": "20.99+", "description": "Lunch size entree (12 oz). Boneless marinated chicken cooked with spinach in tomato cream sauce"},
+        {"name": "Paneer Tikka Masala - Lunch", "price": "20.99+", "description": "Lunch size entree (12 oz). Homemade cheese cubes cooked in a savory tomato onion cream sauce"},
+        {"name": "Saag Paneer - Lunch", "price": "20.99+", "description": "Lunch size entree (12 oz). Homemade cheese cubes cooked in a spinach and tomato cream sauce"},
+        {"name": "Aloo Choley - Lunch", "price": "20.99+", "description": "Lunch size entree (12 oz). Potatoes and chickpeas cooked in spices"},
+        {"name": "Chicken Tikka - Lunch", "price": 20.99, "description": "Grilled boneless chicken marinated in spices, cooked in a clay oven, served with rice, bread, and a drink"},
+        {"name": "Lamb Curry - Lunch", "price": 20.99, "description": "Boneless lamb pieces simmered in a rich gravy of exotic herbs and spices, served with rice, bread, and a drink"}
+      ]
+    },
+    {
+      "category": "Lunch Tandoori Specialties",
+      "hours": "10:45 AM - 2:30 PM",
+      "items": [
+        {"name": "Lal Mass Tandoori", "price": 23.99, "description": "4 chicken pieces, red meat lightly spiced, cooked baked in tandoor clay oven"},
+        {"name": "Chicken Tandoori Half", "price": 22.99, "description": "Chicken marinated in yogurt, mild spices, and herbs"},
+        {"name": "Chicken Tikka", "price": 24.99, "description": "Boneless marinated chicken pieces"},
+        {"name": "Fish Tikka", "price": 26.99, "description": "Delicately broiled salmon"},
+        {"name": "Paneer Tikka", "price": 25.99, "description": "Homemade cheese cubes marinated and baked in clay oven"}
+      ]
+    },
+    {
+      "category": "Lunch Chicken Specialties",
+      "hours": "10:45 AM - 2:30 PM",
+      "items": [
+        {"name": "Chicken Tikka Masala", "price": 22.99, "description": "Lightly broiled chicken cooked in a savory tomato, onion, and cream sauce"},
+        {"name": "Chicken Vindaloo", "price": 22.99, "description": "Spicy. Chicken pieces and potatoes cooked in a tangy hot sauce"},
+        {"name": "Chicken Saag", "price": 22.99, "description": "Chicken pieces cooked with lightly spiced spinach in tomato cream sauce"},
+        {"name": "Chicken Dal", "price": 22.99, "description": "Tender chicken pieces delicately blended with lightly creamed spiced yellow lentils"},
+        {"name": "Chicken Matar", "price": 22.99, "description": "Tender chicken pieces cooked with green peas and spices"},
+        {"name": "Chicken Makhani", "price": 22.99, "description": "Marinated chicken pieces cooked with nuts and raisins in tomato cream sauce"},
+        {"name": "Chili Chicken", "price": 22.99, "description": "Spicy. Tender chicken cooked with hot green chilies and green peppers in curry sauce"},
+        {"name": "Chicken Tikka Saag", "price": 22.99, "description": "Boneless marinated chicken cooked with spinach in tomato cream sauce"},
+        {"name": "Sabaz Chicken", "price": 22.99, "description": "Tender chicken pieces cooked with mildly spiced fresh vegetables"},
+        {"name": "Tikka Bhartha", "price": 22.99, "description": "Marinated chicken tikka cooked with mildly spiced eggplant"},
+        {"name": "Special Chicken Tikka Masala", "price": 22.99, "description": "Lightly broiled chicken cooked with onions and green peppers in a savory tomato sauce"},
+        {"name": "Butter Chicken", "price": 22.99, "description": "Marinated chicken pieces cooked with tomato cream sauce"},
+        {"name": "Chicken Korma", "price": 22.99, "description": "Succulent chicken pieces gently simmered with nuts, raisins, tomato, onion, and cream sauce"},
+        {"name": "Chicken Curry", "price": 22.99, "description": "Mildly spiced chicken cooked in curry sauce"},
+        {"name": "Chicken Jalfrezi", "price": 22.99, "description": "Tender chicken cooked with green peppers, tomatoes, and onions"},
+        {"name": "Chicken Shahi Korma", "price": 22.99, "description": "Succulent chicken pieces gently simmered with nuts, raisins, and homemade cheese cubes"},
+        {"name": "Curry Sauce", "price": 16.99, "description": "Rich and aromatic blend of spices, herbs, and various ingredients, often served with rice"},
+        {"name": "Masala Sauce", "price": 14.99, "description": "Flavorful tomato creamy sauce"},
+        {"name": "Basmati Rice", "price": 4.99, "description": "Long-grain rice"},
+        {"name": "Chicken Ajwain", "price": 22.99, "description": "Tender chicken cooked with green peppers, onions, tomatoes, and caraway seeds"},
+        {"name": "Vindaloo Sauce", "price": 17.99, "description": "Tangy and spicy sauce known for its bold, intense heat"},
+        {"name": "Chicken Mushroom", "price": 22.99, "description": "Tender chicken pieces cooked with mushrooms in curry sauce"}
+      ]
+    },
+    {
+      "category": "Lunch Lamb Specialties",
+      "hours": "10:45 AM - 2:30 PM",
+      "items": [
+        {"name": "Lamb Curry", "price": 26.99, "description": "Lamb simmered in thick curry sauce"},
+        {"name": "Lamb Do Piazza", "price": 26.99, "description": "Lamb smothered with tomatoes, onions, green peppers, and spices"},
+        {"name": "Lamb Korma", "price": 26.99, "description": "Lamb blended with cashews and raisins in tomato cream sauce"},
+        {"name": "Lamb Saag", "price": 26.99, "description": "Lamb cooked with spinach in light tomato cream sauce"},
+        {"name": "Lamb Vindaloo", "price": 26.99, "description": "Spicy. Lamb simmered with potatoes in a tangy hot sauce"},
+        {"name": "Lamb Mushroom", "price": 26.99, "description": "Lamb cooked with mushrooms in curry sauce"},
+        {"name": "Lamb Rogan Josh", "price": 26.99, "description": "Lamb cooked in tomato sauce with a touch of yoghurt"},
+        {"name": "Lamb Punjabi", "price": 26.99, "description": "Lamb cubes cooked with mixed vegetables"},
+        {"name": "Basmati Rice", "price": 4.99, "description": "Long-grain rice"}
+      ]
+    },
+    {
+      "category": "Lunch Shrimp or Fish Specialties",
+      "hours": "10:45 AM - 2:30 PM",
+      "note": "Fish is salmon",
+      "items": [
+        {"name": "Traditional Curry", "price": 26.99, "description": "Choice, cooked in thick curry sauce"},
+        {"name": "Masala", "price": 26.99, "description": "Choice, marinated in yogurt and pan-fried with rich tomato cream sauce"},
+        {"name": "Saag", "price": 26.99, "description": "Choice, simmered with spinach in light tomato cream sauce"},
+        {"name": "Basmati Rice", "price": 4.99, "description": "Long-grain rice"},
+        {"name": "Bhuna", "price": 26.99, "description": "Choice, cooked with onions, garlic, green peppers, and tomatoes in curry sauce"},
+        {"name": "Vindaloo", "price": 26.99, "description": "Spicy. Choice, blended with potatoes in a tangy hot sauce"}
+      ]
+    },
+    {
+      "category": "Lunch Vegetarian Specialties",
+      "hours": "10:45 AM - 2:30 PM",
+      "items": [
+        {"name": "Bhartha Mushroom", "price": 22.99, "description": "Mildly spiced eggplant cooked with fresh mushrooms"},
+        {"name": "Aloo Choley", "price": 22.99, "description": "Chickpeas and potatoes prepared North Indian style"},
+        {"name": "Aloo Gobhi", "price": 22.99, "description": "Potatoes and cauliflower cooked with spices"},
+        {"name": "Aloo Mater", "price": 22.99, "description": "Peas and potato combination blended with aromatic spices cooked in curry sauce"},
+        {"name": "Aloo Saag", "price": 22.99, "description": "Potato cubes cooked in spinach and cream"},
+        {"name": "Aloo Vindaloo", "price": 22.99, "description": "Spicy. Potatoes cooked in a tangy hot sauce"},
+        {"name": "Bhartha", "price": 22.99, "description": "Eggplant cooked with vegetables, onions, green peas, tomatoes, and mild spices"},
+        {"name": "Bhindi Masala", "price": 22.99, "description": "Okra cooked with mild spices, onions, green bell peppers, and tomatoes in curry sauce"},
+        {"name": "Malai Kofta", "price": 22.99, "description": "Mixed vegetable balls with nuts and raisins cooked in tomato cream sauce"},
+        {"name": "Matar Paneer", "price": 22.99, "description": "Fresh mild cheese gently cooked with tender green peas and spices in tomato cream sauce"},
+        {"name": "Mixed Vegetables", "price": 22.99, "description": "Fresh vegetables blended with spices and a touch of curry sauce"},
+        {"name": "Mushroom Matar", "price": 22.99, "description": "Tender mushrooms and green peas cooked in tomato cream sauce"},
+        {"name": "Nav Rattan Korma", "price": 22.99, "description": "Gentle blend of mixed vegetables, cashews, and raisins in tomato cream sauce"},
+        {"name": "Paneer Jalfrezi", "price": 22.99, "description": "Homemade cheese cubes cooked with onions, green bell peppers, and tomatoes in curry sauce"},
+        {"name": "Paneer Makhani", "price": 22.99, "description": "Homemade cheese cubes cooked with nuts and raisins in tomato cream sauce"},
+        {"name": "Saag Choley", "price": 22.99, "description": "Chickpeas and spinach cooked in tomato cream sauce"},
+        {"name": "Saag Kofta", "price": 22.99, "description": "Mildly spiced spinach cooked with vegetable balls in tomato cream sauce"},
+        {"name": "Saag Mushroom", "price": 22.99, "description": "Tender mushrooms cooked with spinach in tomato cream sauce"},
+        {"name": "Saag Paneer", "price": 22.99, "description": "Homemade cheese cubes cooked in spinach and cream"},
+        {"name": "Vegetable Jalfrezi", "price": 22.99, "description": "Fresh vegetables cooked with green peppers, tomatoes, and onions in curry sauce"},
+        {"name": "Dal Makhani", "price": 22.99, "description": "Black lentils prepared with butter, cream, and a touch of spices"},
+        {"name": "Dal Tarka", "price": 22.99, "description": "Yellow lentil cooked with fresh onions and tomatoes"},
+        {"name": "Paneer Bhurji", "price": 22.99, "description": "Shredded homemade cheese cubes with onions, bell peppers, and tomatoes"},
+        {"name": "Basmati Rice", "price": 4.99, "description": "Long-grain rice"},
+        {"name": "Chana Masala", "price": 22.99, "description": "Chickpeas cooked in a traditional North Indian style"},
+        {"name": "Paneer Tikka Masala", "price": 22.99, "description": "Homemade cheese cubes simmered in a rich tomato cream sauce"}
+      ]
+    },
+    {
+      "category": "Lunch Rice Specialties",
+      "hours": "10:45 AM - 2:30 PM",
+      "items": [
+        {"name": "Chicken Biryani Basmati", "price": 22.99, "description": "Rice cooked with tender chunks of chicken, fresh peas, nuts, and raisins"},
+        {"name": "Lamb Biryani", "price": 26.99, "description": "Basmati rice cooked with lamb cubes, fresh peas, nuts, and raisins"},
+        {"name": "Shrimp Biryani", "price": 26.99, "description": "Fresh shrimp lightly tossed with nuts, raisins, onions, and green peas"},
+        {"name": "Vegetable Biryani Special", "price": 22.99, "description": "Rice blended with garden vegetables, nuts, and raisins"}
+      ]
+    },
+    {
+      "category": "Lunch Breads",
+      "hours": "10:45 AM - 2:30 PM",
+      "items": [
+        {"name": "Paneer Bhatura", "price": 7.99, "description": "Crisp layered fried bread stuffed with homemade cheese"},
+        {"name": "Aloo Bhatura", "price": 7.79, "description": "Crisp layered fried bread stuffed with mildly spiced potatoes"},
+        {"name": "Aloo Paratha", "price": 7.79, "description": "Multi-layered whole wheat bread with potatoes"},
+        {"name": "Bhatura", "price": 7.99, "description": "Crisp layered fried bread"},
+        {"name": "Chapati", "price": 7.79, "description": "Roti, traditional baked whole wheat bread"},
+        {"name": "Plain Paratha", "price": 7.79, "description": "Multi-layered whole wheat bread"},
+        {"name": "Poori", "price": 7.79, "description": "Whole wheat bread lightly fried"}
+      ]
+    },
+    {
+      "category": "Lunch Nan-a-Tandoori Breads",
+      "hours": "10:45 AM - 2:30 PM",
+      "items": [
+        {"name": "Chicken Nan", "price": 7.79, "description": "Stuffed with broiled chicken pieces"},
+        {"name": "Aloo Nan", "price": 7.79, "description": "Stuffed with lightly spiced potatoes"},
+        {"name": "Chef's Special", "price": 7.99, "description": "Stuffed with a combination of onions, garlic, potatoes, and chicken"},
+        {"name": "Chilli Nan", "price": 7.79, "description": "Spicy. Chili stuffed nan"},
+        {"name": "Garlic Nan", "price": 7.99, "description": "Garlic stuffed nan"},
+        {"name": "Kashmiri Nan", "price": 7.99, "description": "Stuffed with raisins, almonds, and rose syrup"},
+        {"name": "Keema Nan", "price": 7.99, "description": "Stuffed with ground beef"},
+        {"name": "Nan", "price": 7.79, "description": "Traditional Indian style bread"},
+        {"name": "Onion Nan", "price": 7.79, "description": "Onion stuffed bread"},
+        {"name": "Paneer Nan", "price": 7.99, "description": "Stuffed with homemade cheese, lightly seasoned"},
+        {"name": "Methi Nan", "price": 7.99, "description": "Stuffed with dry fenugreek leaves"}
+      ]
+    },
+    {
+      "category": "Lunch Side Dishes",
+      "hours": "10:45 AM - 2:30 PM",
+      "items": [
+        {"name": "Sweet Mango Chutney", "price": 5.99, "description": "Pureed mango chunks in sweet syrup"},
+        {"name": "Raita", "price": 6.49, "description": "A tangy mixture of potatoes, cucumbers, and tomatoes in fresh homemade yogurt"},
+        {"name": "Hot Pickles", "price": 3.99, "description": "Lightly seasoned"}
+      ]
+    },
+    {
+      "category": "Lunch Extras",
+      "hours": "10:45 AM - 2:30 PM",
+      "items": [
+        {"name": "Curry Sauce", "price": 17.99, "description": "Rich and aromatic blend of spices, herbs, and various ingredients"},
+        {"name": "Masala Sauce", "price": 17.99, "description": "Flavorful tomato creamy sauce"},
+        {"name": "Basmati Rice", "price": 4.99, "description": "Steamed long-grain rice"},
+        {"name": "Chutney Green (1 oz)", "price": 0.50, "description": "Mint chutney"},
+        {"name": "Chutney Brown", "price": "0.50+", "description": "Tamarind chutney"},
+        {"name": "Chutney Red", "price": "0.50+", "description": "Spicy onion chutney"},
+        {"name": "Chutney Green (16 oz)", "price": 9.50, "description": "Mint chutney"},
+        {"name": "Chutney Green (8 oz)", "price": 5.50, "description": "Mint chutney"},
+        {"name": "Vindaloo Sauce", "price": 17.99, "description": "Tangy and spicy sauce known for its bold, intense heat"}
+      ]
+    },
+    {
+      "category": "Lunch Desserts",
+      "hours": "10:45 AM - 2:30 PM",
+      "items": [
+        {"name": "Gulab Jamun", "price": 3.99, "description": "Fried cheese balls soaked in honey syrup, served warm or cold (two pieces)"},
+        {"name": "Kheer", "price": 4.99, "description": "Indian style rice pudding served cold"}
+      ]
+    },
+    {
+      "category": "Lunch Beverages",
+      "hours": "10:45 AM - 2:30 PM",
+      "items": [
+        {"name": "Mango Lassi", "price": 6.99, "description": "Chilled sweet mangoes blended with a touch of rose water and fresh homemade yogurt"},
+        {"name": "Mango Milk Shake", "price": 6.99, "description": "Chilled sweet mangoes blended with a touch of rose water and fresh homemade yogurt"},
+        {"name": "Special Tea / Chai Tea", "price": 4.99, "description": "Freshly brewed with cardamom spices and milk"},
+        {"name": "Hot Tea", "price": 4.99, "description": "Steaming, aromatic blend of finely selected tea leaves"},
+        {"name": "Coffee", "price": 4.99, "description": "Freshly brewed, aromatic blend"},
+        {"name": "Ice Tea", "price": 3.99, "description": "Refreshing chilled tea"},
+        {"name": "Soft Drinks", "price": 3.49, "description": "Selection of chilled soft drinks: Coke, Diet Coke, Sprite, and Dr Pepper"},
+        {"name": "Milk", "price": 3.99, "description": "Fresh, cold, and creamy whole milk"},
+        {"name": "Bottled Water", "price": 2.99, "description": "Pure and refreshing bottled water"},
+        {"name": "Sweet Lassi", "price": 6.99, "description": "Refreshing yogurt drink sweetened with rose water"},
+        {"name": "Aam Ras", "price": 6.49, "description": "Chilled sweet mango juice"},
+        {"name": "Salt Lassi", "price": 6.99, "description": "Refreshing yogurt drink salted with crushed cumin seeds"}
+      ]
+    },
+    {
+      "category": "Appetizers",
+      "hours": "2:30 PM - 9:45 PM",
+      "items": [
+        {"name": "Vegetable Samosa", "price": 9.89, "description": "2 pieces, deep fried crisp pastries stuffed with mildly spiced potatoes and green peas"},
+        {"name": "Chicken Pakora", "price": 13.99, "description": "Tender boneless batter fried chicken marinated with spices"},
+        {"name": "Keema Samosa", "price": 12.99, "description": "Mildly spiced beef filled pastries"},
+        {"name": "Mixed Platter", "price": 12.99, "description": "A sampling of appetizers including chicken pakora and paneer pakora"},
+        {"name": "Paneer Pakora", "price": 12.99, "description": "Homemade cheese cubes lightly spiced and batter fried"},
+        {"name": "Vegetable Pakora", "price": 8.99, "description": "Assorted fresh fritters"},
+        {"name": "Assorted Vegetable Platter", "price": 12.99, "description": "A sampling of vegetarian appetizers"},
+        {"name": "Chicken Dippers", "price": 12.99, "description": "Traditional boneless fried chicken"},
+        {"name": "Onion Bhaji", "price": 8.99, "description": "Lightly spiced onion pakoras"},
+        {"name": "Chane Ki Chat", "price": 8.99, "description": "A tangy sweet blend of fruit and vegetables sprinkled with black Indian salt, served chilled"},
+        {"name": "Papadi Chat", "price": 9.99, "description": "A tangy sweet blend of chick peas, potatoes, papadies, a touch of yogurt with black Indian salt, served chilled"},
+        {"name": "Aloo Tikki", "price": 8.49, "description": "Mildly spiced minced deep fried potatoes"},
+        {"name": "Papardamm", "price": 2.99, "description": "Crisp spicy lentil wafer"},
+        {"name": "Mattu Special", "price": 13.99, "description": "Boneless chicken tandoori tossed with slightly spiced onions, stuffed in a pastry shell, deep fried"},
+        {"name": "Vege Mattu", "price": 13.99, "description": "Homemade cheese tossed with slightly spiced onions and bell peppers, stuffed in a pastry shell, deep fried"}
+      ]
+    },
+    {
+      "category": "Soups",
+      "hours": "2:30 PM - 9:45 PM",
+      "items": [
+        {"name": "Coconut Soup", "price": 7.99, "description": "Coconut cream, flakes, milk"},
+        {"name": "Dal Soup", "price": 6.99, "description": "Deliciously mild lentil soup"}
+      ]
+    },
+    {
+      "category": "Salads",
+      "hours": "2:30 PM - 9:45 PM",
+      "items": [
+        {"name": "Tomatoes and Onions Salad", "price": 5.99, "description": "Lightly seasoned"},
+        {"name": "House Salad", "price": 8.49, "description": "Freshly made tossed salad with herbs and lemon"}
+      ]
+    },
+    {
+      "category": "Tandoori Specialties",
+      "hours": "2:30 PM - 9:45 PM",
+      "note": "Not spicy, baked in a special clay tandoor",
+      "items": [
+        {"name": "Chicken Tikka", "price": 24.99, "description": "Boneless marinated chicken pieces"},
+        {"name": "Chicken Tandoori", "price": 22.99, "description": "Half chicken marinated in yogurt, mild spices, and herbs"},
+        {"name": "Lal Maas Tandoori Chicken", "price": 23.99, "description": "Lightly spiced red meat chicken cooked baked in tandoor clay oven"},
+        {"name": "Lamb Chops", "price": 35.99, "description": "Grilled lamb chops with Indian spices"},
+        {"name": "Paneer Tikka", "price": 25.99, "description": "Homemade cheese cubes marinated, cooked in clay oven"},
+        {"name": "Fish Tikka", "price": 26.99, "description": "Salmon, delicately broiled to perfection"}
+      ]
+    },
+    {
+      "category": "Chicken Specialties",
+      "hours": "2:30 PM - 9:45 PM",
+      "note": "Boneless",
+      "items": [
+        {"name": "Chicken Tikka Masala", "price": 22.99, "description": "Lightly broiled chicken cooked in a savory tomato, onion, and butter sauce"},
+        {"name": "Chicken Makhani", "price": 22.99, "description": "Specially cooked marinated chicken pieces smothered with onions, tomatoes, butter and cream sauce with nuts and raisins"},
+        {"name": "Chicken Curry", "price": 22.99, "description": "Mildly spiced with lots of sauce"},
+        {"name": "Chicken Saag", "price": 22.99, "description": "Chicken pieces cooked with lightly spiced spinach and cream"},
+        {"name": "Chicken Tikka Saag", "price": 22.99, "description": "Boneless marinated chicken cooked with spinach, cream, and tomato sauce"},
+        {"name": "Special Chicken Tikka Masala", "price": 23.49, "description": "Tender boneless chicken cooked in tomato cream sauce with onions and bell peppers"},
+        {"name": "Chicken Vindaloo", "price": 22.99, "description": "Chicken pieces and potatoes cooked in a tangy hot sauce"},
+        {"name": "Chicken Dal", "price": 22.99, "description": "Tender chicken pieces delicately blended with lightly creamed spiced lentils"},
+        {"name": "Chicken Mater", "price": 22.99, "description": "Tender chicken pieces cooked with green peas and spices"},
+        {"name": "Chicken Jalfrezi", "price": 22.99, "description": "Tender chicken cooked with green peppers, tomatoes, and onions"},
+        {"name": "Chicken Shahi Korma", "price": 22.99, "description": "Succulent chicken pieces and cheese cubes gently simmered with nuts and raisins"},
+        {"name": "Chicken Mushroom", "price": 22.99, "description": "Tender chicken pieces cooked with mushrooms"},
+        {"name": "Chili Chicken", "price": 22.99, "description": "Made with hot chili and green bell pepper"},
+        {"name": "Sabaz Chicken", "price": 22.99, "description": "Tender chicken pieces cooked with mildly spiced fresh vegetables"},
+        {"name": "Chicken Ajwain", "price": 22.99, "description": "Tender chicken cooked with green peppers, tomatoes, and caraway seeds"},
+        {"name": "Curry or Masala Sauce", "price": 16.99, "description": "Curry or masala sauce without chicken"}
+      ]
+    },
+    {
+      "category": "Lamb Specialties",
+      "hours": "2:30 PM - 9:45 PM",
+      "items": [
+        {"name": "Lamb Curry", "price": 26.99, "description": "Lamb simmered in thick curry sauce"},
+        {"name": "Lamb Korma", "price": 26.99, "description": "Lamb blended with cream, cashews, and raisins"},
+        {"name": "Lamb Saag", "price": 26.99, "description": "Lamb cooked with lightly spiced spinach and cream"},
+        {"name": "Lamb Rogan Josh", "price": 26.99, "description": "Lamb cooked in tomato sauce with a touch of yogurt"},
+        {"name": "Lamb Vindaloo", "price": 26.99, "description": "Lamb simmered with potatoes cooked in a tangy hot sauce"},
+        {"name": "Lamb Mushroom", "price": 26.99, "description": "Lamb cooked with mushrooms"},
+        {"name": "Lamb Do Piaza", "price": 26.99, "description": "Lamb smothered with tomatoes, onions, peppers, and spices"}
+      ]
+    },
+    {
+      "category": "Shrimp or Fish Specialties",
+      "hours": "2:30 PM - 9:45 PM",
+      "note": "Fish is salmon",
+      "items": [
+        {"name": "Masala", "price": 26.99, "description": "Choice, skewered, marinated in yogurt, pan fried with rich tomatoes, curry, and cream"},
+        {"name": "Saag", "price": 26.99, "description": "Choice, simmered with spinach in a light cream sauce"},
+        {"name": "Vindaloo", "price": 26.99, "description": "Choice, blended with potatoes in a tangy hot sauce"},
+        {"name": "Traditional Curry", "price": 26.99, "description": "Choice, in thick curry sauce"},
+        {"name": "Bhuna", "price": 26.99, "description": "Choice, fried, smothered with onions, ginger, garlic, peppers, and tomatoes"},
+        {"name": "Scallop Masala", "price": 28.99, "description": "Sea scallop cooked in tomato and cream sauce"}
+      ]
+    },
+    {
+      "category": "Vegetarian Specialties",
+      "hours": "2:30 PM - 9:45 PM",
+      "items": [
+        {"name": "Aloo Choley", "price": 22.99, "description": "Chick peas and potatoes prepared North Indian style"},
+        {"name": "Saag Paneer", "price": 22.99, "description": "Homemade cheese cubes cooked in spinach and cream"},
+        {"name": "Mushroom Mater", "price": 22.99, "description": "Tender mushrooms and green peas cooked with tomato sauce"},
+        {"name": "Saag Choley", "price": 22.99, "description": "Chick peas and spinach cooked in tomato and cream sauce"},
+        {"name": "Saag Mushroom", "price": 22.99, "description": "Tender mushrooms cooked with spinach and cream sauce"},
+        {"name": "Malai Kofta", "price": 22.99, "description": "Mixed vegetable balls cooked in an onion and tomato sauce"},
+        {"name": "Matter Paneer", "price": 22.99, "description": "Fresh mild cheese gently cooked with tender green peas and spices"},
+        {"name": "Aloo Mater", "price": 22.99, "description": "Peas and potato combination blended with aromatic spices"},
+        {"name": "Nav Rattan Korma", "price": 22.99, "description": "Gentle blend of mixed vegetables, cashews, and light cream"},
+        {"name": "Aloo Saag", "price": 22.99, "description": "Potato cubes cooked in spinach and cream"},
+        {"name": "Bhartha", "price": 22.99, "description": "Eggplant cooked with vegetables and mild spices"},
+        {"name": "Aloo Vindaloo", "price": 22.99, "description": "Potatoes cooked in a tangy hot sauce"},
+        {"name": "Mixed Vegetables", "price": 22.99, "description": "Fresh vegetables blended with spices with a touch of curry sauce"},
+        {"name": "Paneer Makhani", "price": 22.99, "description": "Homemade cheese cubes cooked in tomato and cream sauce"},
+        {"name": "Dal Makhani", "price": 22.99, "description": "Creamed lentils prepared with butter, cream, and a touch of spice"},
+        {"name": "Aloo Gobhi", "price": 22.99, "description": "Freshly cooked cauliflower with potatoes, light spices"},
+        {"name": "Dal Tarka", "price": 22.99, "description": "Yellow lentils cooked with spices"},
+        {"name": "Paneer Jalfrezi", "price": 22.99, "description": "Homemade cheese cubes cooked in curry and tomato sauce with onions"},
+        {"name": "Vegetable Jalfrezi", "price": 22.99, "description": "Fresh vegetables cooked with green peppers, tomatoes, and onions"},
+        {"name": "Add More Veges or Cheese to Entree", "price": 4.00, "description": "Only one extra allowed per entree"},
+        {"name": "Bhartha Saag", "price": 22.99, "description": "Eggplant and spinach cooked together"}
+      ]
+    },
+    {
+      "category": "Rice Specialty Dishes",
+      "hours": "2:30 PM - 9:45 PM",
+      "note": "Biryani, served with raita",
+      "items": [
+        {"name": "Chicken Biryani", "price": 23.99, "description": "Basmati rice cooked with tender chunks of chicken, fresh peas, and nuts and raisins"},
+        {"name": "Vegetable Biryani", "price": 22.99, "description": "Special rice blended with garden vegetables and nuts and raisins"},
+        {"name": "Lamb Biryani", "price": 26.99, "description": "Basmati rice cooked with lamb cubes and fresh peas and nuts"},
+        {"name": "Shrimp Biryani", "price": 26.99, "description": "Fresh shrimp lightly tossed with nuts and raisins"},
+        {"name": "Xtra Rice", "price": 4.99, "description": "Specially blended rice with a touch of spice and peas"}
+      ]
+    },
+    {
+      "category": "Dinner Specialties",
+      "hours": "2:30 PM - 9:45 PM",
+      "items": [
+        {"name": "Lamb and Shrimp Curry", "price": 28.99, "description": "Mildly spiced shrimp and lamb in curry sauce served with nan and rice"},
+        {"name": "Lamb Choley", "price": 28.99, "description": "Chick peas cooked with lamb, served with fried bhatura and rice"}
+      ]
+    },
+    {
+      "category": "Breads",
+      "hours": "2:30 PM - 9:45 PM",
+      "items": [
+        {"name": "Chapati", "price": 7.79, "description": "Roti, traditional baked whole wheat bread"},
+        {"name": "Bhatura", "price": 7.79, "description": "Crispy layered fried bread"},
+        {"name": "Paneer Bhatura", "price": 7.99, "description": "Crispy layered fried bread stuffed with homemade cheese"},
+        {"name": "Aloo Paratha", "price": 7.79, "description": "Multi-layered whole wheat bread stuffed with potato"},
+        {"name": "Plain Paratha", "price": 7.79, "description": "Multi-layered whole wheat bread"},
+        {"name": "Poori", "price": 7.79, "description": "Whole wheat bread lightly fried"},
+        {"name": "Aloo Bhatura", "price": 7.99, "description": "Crispy layered fried bread stuffed with mildly spiced potatoes"}
+      ]
+    },
+    {
+      "category": "Nan-a-Tandoori Breads",
+      "hours": "2:30 PM - 9:45 PM",
+      "items": [
+        {"name": "Garlic Nan", "price": 7.99, "description": "Garlic stuffed nan"},
+        {"name": "Onion Nan", "price": 7.79, "description": "Onion stuffed bread"},
+        {"name": "Nan", "price": 7.79, "description": "Traditional Indian style bread"},
+        {"name": "Paneer Nan", "price": 7.99, "description": "Stuffed with cheese"},
+        {"name": "Chef's Special", "price": 7.99, "description": "Stuffed with a combination of onions, garlic, potatoes, and chicken"},
+        {"name": "Chicken Nan", "price": 7.79, "description": "Stuffed with broiled chicken pieces"},
+        {"name": "Aloo Nan", "price": 7.79, "description": "Stuffed with lightly spiced potatoes"},
+        {"name": "Chilli Nan", "price": 7.99, "description": "Green chillies, spicy bread"},
+        {"name": "Kashmiri Nan", "price": 7.99, "description": "Bread with nuts and raisins"}
+      ]
+    },
+    {
+      "category": "Side Dishes",
+      "hours": "2:30 PM - 9:45 PM",
+      "items": [
+        {"name": "Hot Pickles", "price": 3.99, "description": "Assorted vegetable pickled in oil"},
+        {"name": "Raita", "price": 6.49, "description": "A tangy mixture of potatoes, cucumbers, and tomatoes in fresh homemade yogurt"},
+        {"name": "Sweet Mango Chutney", "price": 5.99, "description": "Pureed mango chunks in sweet syrup"}
+      ]
+    },
+    {
+      "category": "Desserts",
+      "hours": "2:30 PM - 9:45 PM",
+      "items": [
+        {"name": "Gulab Jamun", "price": 3.99, "description": "Fried cheese ball soaked in honey syrup, served warm"},
+        {"name": "Kheer", "price": 4.99, "description": "Indian style rice pudding served cool with pistachios"}
+      ]
+    },
+    {
+      "category": "Beverages",
+      "hours": "2:30 PM - 9:45 PM",
+      "items": [
+        {"name": "Mango Lassi", "price": 6.99, "description": "Chilled sweet mangoes blended with a touch of rose water and fresh homemade yogurt"},
+        {"name": "Lassi", "price": 6.99, "description": "Refreshing yogurt drink sweetened with rose water or salted with crushed cumin seeds"},
+        {"name": "Mango Milk Shake", "price": 6.99, "description": "Creamy blend of ripe mangoes and milk, smooth and refreshing"},
+        {"name": "Ice Tea", "price": 4.99, "description": "Refreshing chilled tea"},
+        {"name": "Milk", "price": 3.99, "description": "Fresh, cold, and creamy whole milk"},
+        {"name": "Water Bottle", "price": 2.99, "description": "500 ml"},
+        {"name": "Dr Pepper", "price": 3.49, "description": "Soft drink"},
+        {"name": "Mountain Dew", "price": 3.49, "description": "Crisp citrus-flavored soda"},
+        {"name": "Soft Drinks", "price": 4.49, "description": "Choice of Coke, Diet Coke, or Sprite in a can"},
+        {"name": "Tea or Coffee", "price": 3.99, "description": ""},
+        {"name": "Special Tea", "price": 4.99, "description": "Freshly brewed with cardamom spices and milk"}
+      ]
+    }
+  ]
+}
