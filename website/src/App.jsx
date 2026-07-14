@@ -7,7 +7,7 @@ const menu = [
   ['✧', 'Fresh from the tandoor', 'Garlic Naan', 'Soft Indian bread, warm from the clay oven and generously seasoned.', '$7.99'],
 ];
 const locations = [
-  ['Ambar India Clifton', '350 Ludlow Ave · Pickup · Delivery · Catering', 'https://ambarindia.net/menu'],
+  ['Ambar India Clifton', '350 Ludlow Ave · Pickup · Delivery · Catering', '#menu'],
   ['Ambar India Downtown', 'Coming soon · Pickup · Delivery · Lunch', '#'],
   ['Ambar India Events', 'Coming soon · Catering · Private events', '#'],
 ];
