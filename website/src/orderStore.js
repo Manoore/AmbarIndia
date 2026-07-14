@@ -31,5 +31,6 @@ export async function listManagerOrders() {
   return { orders: data || [], error: error?.message || null };
 }
 export async function updateOrderStatus(id, status, note = '') { if (!supabase) return { error: 'Orders are temporarily unavailable.' }; const patch = { status, kitchen_note: note }; if (status === 'preparing') patch.estimated_ready_at = new Date(Date.now() + 25 * 60000).toISOString(); const { error } = await supabase.from('orders').update(patch).eq('id', id); return { error: error?.message || null }; }
+export async function updateOrderPayment(id, paymentMethod, amountTendered, paymentStatus = 'paid') { if (!supabase) return { error: 'Payments are temporarily unavailable.' }; const { error } = await supabase.from('orders').update({ payment_method: paymentMethod, amount_tendered: amountTendered || null, payment_status: paymentStatus }).eq('id', id); return { error: error?.message || null }; }
 export async function trackOrder(reference, token) { if (!supabase) return { order: null, error: 'Order tracking is temporarily unavailable.' }; const { data, error } = await supabase.rpc('track_order', { p_order_reference: reference, p_access_token: token }); return { order: data?.[0] || null, error: error?.message || null }; }
 export const orderStages = ['new', 'preparing', 'ready', 'completed'];
