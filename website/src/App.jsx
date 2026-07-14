@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import ExperienceSections from './ExperienceSections.jsx';
 import MenuCatalogue from './MenuCatalogue.jsx';
-import { loadLocations } from './locationStore.js';
+import { loadCloudLocations, loadLocations } from './locationStore.js';
 
 const featured = [
   ['Guest favourite', 'Chicken Tikka Masala', 'Lightly broiled chicken in a savoury tomato, onion, and cream sauce.', '$22.99'],
@@ -17,7 +17,7 @@ export default function App() {
   const [selectedId, setSelectedId] = useState(() => localStorage.getItem('ambar-selected-location') || loadLocations()[0].id);
   const selected = locations.find((location) => location.id === selectedId) || locations[0];
   const choose = (id) => { localStorage.setItem('ambar-selected-location', id); setSelectedId(id); setOpen(false); };
-  useEffect(() => { const refresh = () => setLocations(loadLocations()); window.addEventListener('storage', refresh); return () => window.removeEventListener('storage', refresh); }, []);
+  useEffect(() => { const refresh = () => setLocations(loadLocations()); window.addEventListener('storage', refresh); loadCloudLocations().then(({ locations: cloud }) => { if (cloud) setLocations(cloud); }); return () => window.removeEventListener('storage', refresh); }, []);
   const useNearby = () => navigator.geolocation?.getCurrentPosition(() => choose(locations[0].id), () => {}, { timeout: 5000, maximumAge: 600000 });
   const services = selected.services.map((service) => service.replace('-', ' ')).join(' · ');
 

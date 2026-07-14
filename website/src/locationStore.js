@@ -11,3 +11,19 @@ export function loadLocations() {
 }
 export function saveLocations(locations) { localStorage.setItem(LOCATION_STORE, JSON.stringify(locations)); }
 export function makeLocationId(name) { return `${name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}-${Date.now().toString().slice(-4)}`; }
+
+const fromRow = (row) => ({ id: row.id, name: row.name, address: row.address, phone: row.phone, services: row.services || [], hours: row.hours || {}, rewardOffer: row.reward_offer || '', menuNote: row.menu_note || '' });
+const toRow = (location) => ({ id: location.id, name: location.name, address: location.address || '', phone: location.phone || '', services: location.services || [], hours: location.hours || {}, reward_offer: location.rewardOffer || '', menu_note: location.menuNote || '', is_active: true });
+
+export async function loadCloudLocations() {
+  if (!supabase) return { locations: null, error: 'Supabase environment values are missing.' };
+  const { data, error } = await supabase.from('locations').select('*').eq('is_active', true).order('name');
+  return { locations: error || !data?.length ? null : data.map(fromRow), error: error?.message || null };
+}
+
+export async function saveCloudLocations(locations) {
+  if (!supabase) return { error: 'Supabase environment values are missing.' };
+  const { error } = await supabase.from('locations').upsert(locations.map(toRow));
+  return { error: error?.message || null };
+}
+import { supabase } from './supabaseClient.js';
