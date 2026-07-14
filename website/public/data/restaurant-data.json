@@ -1,0 +1,17 @@
+{
+  "restaurant": "Ambar India",
+  "defaultLocationId": "clifton",
+  "locations": [
+    {
+      "id": "clifton",
+      "active": true,
+      "name": "Ambar India Clifton",
+      "address": "350 Ludlow Ave, Cincinnati, OH 45220",
+      "coordinates": { "latitude": 39.1327, "longitude": -84.5146 },
+      "phone": "513-281-7000",
+      "services": ["dine-in", "pickup", "delivery", "catering"],
+      "menuId": "clifton-menu",
+      "rewards": { "enabled": true, "headline": "Earn points toward free food", "offer": "Free Garlic Nan with orders over $35" }
+    }
+  ]
+}
