@@ -9,6 +9,7 @@ import '../styles.css';
 import './AdminChrome.css';
 import './AnalyticsDashboard.css';
 import './CounterPOS.css';
+import './PlatformOperations.css';
 
 const rootElement = document.getElementById('root');
 try {
