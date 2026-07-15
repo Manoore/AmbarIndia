@@ -5,15 +5,16 @@ import { PlatformSubscriptions, PlatformAnalytics, PlatformLegal } from './Platf
 
 const plans = { starter: 'Website · menu · reservations', growth: 'Ordering · POS · kitchen · team', pro: 'Multi-location · rewards · analytics' };
 export default function PlatformDashboard() {
-  const [session, setSession] = useState(null); const [ready, setReady] = useState(false); const [allowed, setAllowed] = useState(false); const [merchants, setMerchants] = useState([]); const [message, setMessage] = useState(''); const [adding, setAdding] = useState(false);
+  const [session, setSession] = useState(null); const [ready, setReady] = useState(false); const [allowed, setAllowed] = useState(false); const [allowedReady, setAllowedReady] = useState(false); const [merchants, setMerchants] = useState([]); const [message, setMessage] = useState(''); const [adding, setAdding] = useState(false);
   useEffect(() => { if (!supabase) return setReady(true); supabase.auth.getSession().then(({ data }) => { setSession(data.session); setReady(true); }); }, []);
-  useEffect(() => { if (!session || !supabase) return; supabase.from('platform_admins').select('user_id').eq('user_id', session.user.id).maybeSingle().then(({ data }) => setAllowed(Boolean(data))); }, [session]);
+  useEffect(() => { if (!session || !supabase) return; setAllowedReady(false); supabase.from('platform_admins').select('user_id').eq('user_id', session.user.id).maybeSingle().then(({ data }) => { setAllowed(Boolean(data)); setAllowedReady(true); }); }, [session]);
   const load = async () => { if (!supabase) return; const base = await supabase.from('organizations').select('id,name,slug,plan,created_at').order('created_at', { ascending: false }); if (base.error) return setMessage('No merchant workspaces are available yet. Use Add merchant to create the first one.'); const { data: locations } = await supabase.from('locations').select('id,name,organization_id').eq('is_active', true); const safeLocations = locations || []; setMerchants((base.data || []).map((org) => ({ ...org, status: org.status || 'active', tagline: org.tagline || '', locations: safeLocations.filter((location) => location.organization_id === org.id) }))); };
   useEffect(() => { if (allowed) load(); }, [allowed]);
   const updateMerchant = async (id, patch) => { const { error } = await supabase.from('organizations').update(patch).eq('id', id); if (error) return setMessage('That merchant could not be updated.'); setMerchants((items) => items.map((item) => item.id === id ? { ...item, ...patch } : item)); setMessage('Merchant account updated.'); };
   const totals = useMemo(() => ({ active: merchants.filter((item) => item.status === 'active').length, trial: merchants.filter((item) => item.status === 'trial').length, locations: merchants.reduce((sum, item) => sum + item.locations.length, 0) }), [merchants]);
   if (!ready) return <main className="platform-auth"><p>Loading platform access…</p></main>;
   if (!session) return <PlatformLogin />;
+  if (!allowedReady) return <main className="platform-auth"><p>Checking platform access…</p></main>;
   if (!allowed) return <main className="platform-auth"><section><p className="eyebrow">Platform access</p><h1>This account is not a platform administrator.</h1><p>Sign in with your product-owner account to manage restaurant customers.</p><button className="platform-button" onClick={() => supabase.auth.signOut()}>Sign out</button></section></main>;
   if (window.location.pathname.startsWith('/platform/support')) return <PlatformSupport session={session} />;
   if (window.location.pathname.startsWith('/platform/subscriptions')) return <PlatformSubscriptions merchants={merchants} />;
