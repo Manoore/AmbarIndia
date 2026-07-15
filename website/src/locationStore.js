@@ -12,8 +12,8 @@ export function loadLocations() {
 export function saveLocations(locations) { localStorage.setItem(LOCATION_STORE, JSON.stringify(locations)); }
 export function makeLocationId(name) { return `${name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}-${Date.now().toString().slice(-4)}`; }
 
-const fromRow = (row) => ({ id: row.id, name: row.name, address: row.address, phone: row.phone, services: row.services || [], hours: row.hours || {}, rewardOffer: row.reward_offer || '', menuNote: row.menu_note || '', menuAvailability: row.menu_availability || [] });
-const toRow = (location) => ({ id: location.id, name: location.name, address: location.address || '', phone: location.phone || '', services: location.services || [], hours: location.hours || {}, reward_offer: location.rewardOffer || '', menu_note: location.menuNote || '', menu_availability: location.menuAvailability || [], is_active: true });
+const fromRow = (row) => ({ id: row.id, name: row.name, address: row.address, phone: row.phone, services: row.services || [], hours: row.hours || {}, rewardOffer: row.reward_offer || '', menuNote: row.menu_note || '', menuAvailability: row.menu_availability || [], organizationId: row.organization_id || null });
+const toRow = (location) => ({ id: location.id, name: location.name, address: location.address || '', phone: location.phone || '', services: location.services || [], hours: location.hours || {}, reward_offer: location.rewardOffer || '', menu_note: location.menuNote || '', menu_availability: location.menuAvailability || [], organization_id: location.organizationId || null, is_active: true });
 
 export async function loadCloudLocations() {
   if (!supabase) return { locations: null, error: 'Supabase environment values are missing.' };
