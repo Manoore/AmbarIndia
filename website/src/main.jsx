@@ -3,13 +3,15 @@ import { createRoot } from 'react-dom/client';
 import App from './App.jsx';
 import AdminDashboard from './AdminDashboard.jsx';
 import MenuPage from './MenuPage.jsx';
+import PlatformDashboard from './PlatformDashboard.jsx';
 import '../styles.css';
 
 const rootElement = document.getElementById('root');
 try {
   const isAdmin = window.location.pathname.startsWith('/admin');
   const isMenu = window.location.pathname.startsWith('/menu');
-  const Screen = isAdmin ? AdminDashboard : isMenu ? MenuPage : App;
+  const isPlatform = window.location.pathname.startsWith('/platform');
+  const Screen = isPlatform ? PlatformDashboard : isAdmin ? AdminDashboard : isMenu ? MenuPage : App;
   createRoot(rootElement).render(<StrictMode><Screen /></StrictMode>);
 } catch (error) {
   console.error('Ambar application failed to start.', error);
