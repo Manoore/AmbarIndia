@@ -10,6 +10,8 @@ import './AdminChrome.css';
 import './AnalyticsDashboard.css';
 import './CounterPOS.css';
 import './PlatformOperations.css';
+import './PlatformNavigation.css';
+import { PlatformSectionLinks } from './PlatformOperations.jsx';
 
 const rootElement = document.getElementById('root');
 try {
@@ -18,7 +20,7 @@ try {
   const isSite = window.location.pathname.startsWith('/site/');
   const isPlatform = window.location.pathname.startsWith('/platform');
   const Screen = isPlatform ? PlatformDashboard : isAdmin ? AdminDashboard : isMenu ? MenuPage : isSite ? App : App;
-  createRoot(rootElement).render(<StrictMode><Screen /><AdminQuickLogout /><AdminToastHost /></StrictMode>);
+  createRoot(rootElement).render(<StrictMode><Screen /><PlatformSectionLinks /><AdminQuickLogout /><AdminToastHost /></StrictMode>);
 } catch (error) {
   console.error('Ambar application failed to start.', error);
   rootElement.innerHTML = '<main class="startup-message"><p>AMBAR INDIA</p><h1>We’re refreshing the experience.</h1><span>Please refresh this page in a moment.</span></main>';
