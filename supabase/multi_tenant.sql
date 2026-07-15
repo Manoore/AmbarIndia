@@ -6,6 +6,10 @@ create table if not exists public.organizations (
   name text not null,
   slug text not null unique,
   plan text not null default 'starter' check (plan in ('starter','growth','pro')),
+  tagline text not null default '',
+  logo_url text not null default '',
+  primary_color text not null default '#5b1723',
+  accent_color text not null default '#d9ff75',
   owner_user_id uuid not null references auth.users(id) on delete restrict,
   created_at timestamptz not null default now()
 );
@@ -33,6 +37,8 @@ drop policy if exists "Owners can view their organization" on public.organizatio
 create policy "Owners can view their organization" on public.organizations for select using (owner_user_id = auth.uid() or exists (select 1 from public.staff_profiles where user_id = auth.uid() and organization_id = organizations.id));
 drop policy if exists "Authenticated users can create an organization" on public.organizations;
 create policy "Authenticated users can create an organization" on public.organizations for insert with check (owner_user_id = auth.uid());
+drop policy if exists "Public can view organization brand" on public.organizations;
+create policy "Public can view organization brand" on public.organizations for select using (true);
 drop policy if exists "Owners can update their organization" on public.organizations;
 create policy "Owners can update their organization" on public.organizations for update using (owner_user_id = auth.uid()) with check (owner_user_id = auth.uid());
 

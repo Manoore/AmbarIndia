@@ -1,28 +1,31 @@
 import React, { useEffect, useState } from 'react';
 import ExperienceSections from './ExperienceSections.jsx';
 import { loadCloudLocations, loadLocations } from './locationStore.js';
+import { defaultBrand, loadBrandConfig } from './brandStore.js';
 
 const featured = [
   ['Guest favourite', 'Chicken Tikka Masala', 'Lightly broiled chicken in a savoury tomato, onion, and cream sauce.', '$22.99'],
   ['Vegetarian favourite', 'Saag Paneer', 'House-made paneer cooked with spinach in a delicate tomato cream sauce.', '$22.99'],
   ['Fresh from the tandoor', 'Garlic Naan', 'Soft Indian bread, warm from the clay oven and generously seasoned.', '$7.99'],
 ];
-function Brand() { return <a className="brand" href="/">AMBAR <span>INDIA</span><small>RESTAURANT</small></a>; }
+function Brand({ brand = defaultBrand }) { return <a className="brand" href="/"><span className="brand-name">{brand.name}</span><small>{brand.tagline || 'RESTAURANT'}</small></a>; }
 function ChefGuide() { return <a className="chef-guide" href="/menu" aria-label="Explore menu"><img src="/assets/ambar-chef.png" alt="Ambar India chef" /><span>Chef's picks<br /><b>Explore the menu</b></span></a>; }
 
 export default function App() {
   const [open, setOpen] = useState(false);
   const [locations, setLocations] = useState(() => loadLocations());
+  const [brand, setBrand] = useState(defaultBrand);
   const [selectedId, setSelectedId] = useState(() => localStorage.getItem('ambar-selected-location') || loadLocations()[0].id);
   const selected = locations.find((location) => location.id === selectedId) || locations[0];
   const choose = (id) => { localStorage.setItem('ambar-selected-location', id); setSelectedId(id); setOpen(false); };
   useEffect(() => { const refresh = () => setLocations(loadLocations()); window.addEventListener('storage', refresh); loadCloudLocations().then(({ locations: cloud }) => { if (cloud) setLocations(cloud); }); return () => window.removeEventListener('storage', refresh); }, []);
+  useEffect(() => { loadBrandConfig().then((config) => { setBrand(config); document.documentElement.style.setProperty('--wine', config.primary_color); document.documentElement.style.setProperty('--saffron', config.accent_color); }); }, []);
   const useNearby = () => navigator.geolocation?.getCurrentPosition(() => choose(locations[0].id), () => {}, { timeout: 5000, maximumAge: 600000 });
   const services = selected.services.map((service) => service.replace('-', ' ')).join(' · ');
 
   return <><div className="announcement">Order directly from Ambar India · Save on fees · Earn rewards</div>
     <section className="nearby-bar"><div><b>{selected.name}</b><span>{selected.address} · {services}</span></div><button onClick={useNearby}>Use my location</button><button onClick={() => setOpen(true)}>Change location</button><a href="/menu">Order now →</a></section><ChefGuide />
-    <header className="site-header"><Brand /><nav><a href="#story">Our story</a><a href="/menu">Menu</a><a href="#catering">Catering</a><a href="#visit">Visit us</a></nav><a className="outline-button" href="/menu">Order online <b>→</b></a></header>
+    <header className="site-header"><Brand brand={brand} /><nav><a href="#story">Our story</a><a href="/menu">Menu</a><a href="#catering">Catering</a><a href="#visit">Visit us</a></nav><a className="outline-button" href="/menu">Order online <b>→</b></a></header>
     <main id="top">
       <section className="hero"><div className="hero-shade" /><div className="hero-copy"><p className="eyebrow">Northern Indian cuisine · {selected.name.replace('Ambar India ', '')}</p><h1>A table full of<br /><em>India's warmth.</em></h1><p>From our tandoor to your table, Ambar India serves vibrant curries, fragrant basmati rice, handmade breads, and generous hospitality.</p><div className="hero-actions"><a className="primary-button" href="/menu">Start your order <span>→</span></a><a className="light-link" href="#story">Discover Ambar <span>↓</span></a></div></div><div className="hero-badge"><span>Since</span><b>AMBAR</b><span>Authentic flavours · warmly served</span></div></section>
       <section id="story" className="story section"><div className="story-art"><div className="arch"><span>31</span><p>Years of flavour,<br />family and heart</p></div></div><div className="story-copy"><p className="eyebrow">Our story</p><h2>Cincinnati's home for Northern Indian food for 31 years.</h2><p>Thirty-one years ago, Ambar India opened its doors with a dream, a handful of recipes, and a whole lot of heart. Since then, we have shared countless meals, stories, and memories with our Cincinnati community.</p><p>Every tandoori dish, fragrant curry, and soft bread is prepared fresh daily. Whether it is a casual dinner, a family gathering, or a special celebration, every meal is made with care.</p><div className="tags"><span>Since 1995</span><span>Fresh every day</span><span>{selected.name.replace('Ambar India ', '')}</span></div></div></section>
@@ -31,7 +34,7 @@ export default function App() {
       <section id="catering" className="catering"><div className="catering-photo" /><div className="catering-copy"><p className="eyebrow">Catering for every occasion</p><h2>Bring the feast to your celebration.</h2><p>From weddings and birthdays to office lunches and special gatherings, our tandoori dishes, curries, and fresh breads make every occasion memorable.</p><a className="primary-button" href="mailto:singhjag@fuse.net?subject=Ambar%20India%20catering%20enquiry">Plan your event <span>→</span></a></div></section>
       <section id="visit" className="visit"><div><p className="eyebrow">Visit us today</p><h2>Your table is waiting.</h2><p>Enjoy a relaxed meal, pick up your favourites, or order delivery where offered.</p><div className="visit-details"><p><b>{selected.name}</b><br />{selected.address}</p><p><b>Call us</b><br />{selected.phone || 'Phone number to be configured'}</p></div><button className="primary-button" onClick={() => setOpen(true)}>Change location <span>→</span></button></div><div className="hours"><p className="eyebrow">Opening hours</p><p><b>Sunday</b><span>{selected.hours?.sunday || 'Please check with this location'}</span></p><p><b>Mon – Fri</b><span>{selected.hours?.weekday || 'Please check with this location'}</span></p><p><b>Saturday</b><span>{selected.hours?.saturday || 'Please check with this location'}</span></p></div></section>
       <section className="rewards"><div><p className="eyebrow">{selected.name} rewards</p><h2>Good food deserves<br />good rewards.</h2><p>{selected.rewardOffer || 'Join rewards to earn points and receive member offers.'}</p><button className="light-button">Join rewards <span>→</span></button></div><div className="rewards-seal">AMBAR<br /><b>REWARDS</b><span>Eat · earn · repeat</span></div></section>
-      <ExperienceSections location={selected} /></main><footer><Brand /><div><a href="/menu">Menu</a><a href="#reserve">Reserve a table</a><a href="#catering">Catering</a><a href="#visit">Contact</a></div><p>© 2026 Ambar India Restaurant</p></footer>
+      <ExperienceSections location={selected} /></main><footer><Brand brand={brand} /><div><a href="/menu">Menu</a><a href="#reserve">Reserve a table</a><a href="#catering">Catering</a><a href="#visit">Contact</a></div><p>© 2026 {brand.name}</p></footer>
     {open && <div className="modal-backdrop" onMouseDown={() => setOpen(false)}><section className="location-modal" onMouseDown={(event) => event.stopPropagation()} role="dialog" aria-modal="true"><button className="close-button" onClick={() => setOpen(false)}>×</button><p className="eyebrow">Order Ambar India</p><h2>Choose your location</h2><p className="dialog-intro">The menu details, services, hours and rewards below update for the selected location.</p><div className="location-list">{locations.map((location) => <button className="location-card" key={location.id} onClick={() => choose(location.id)}><span><b>{location.name}</b><small>{location.address} · {location.services.join(' · ')}</small></span><i>→</i></button>)}</div></section></div>}
   </>;
 }
