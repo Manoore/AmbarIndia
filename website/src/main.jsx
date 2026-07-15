@@ -11,6 +11,7 @@ import './AnalyticsDashboard.css';
 import './CounterPOS.css';
 import './PlatformOperations.css';
 import './PlatformNavigation.css';
+import './InviteLink.css';
 import { PlatformSectionLinks } from './PlatformOperations.jsx';
 
 const rootElement = document.getElementById('root');

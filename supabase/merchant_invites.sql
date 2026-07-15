@@ -9,8 +9,14 @@ create table if not exists public.merchant_invites (
   status text not null default 'pending' check (status in ('pending','accepted','cancelled')),
   invited_by uuid not null references auth.users(id),
   organization_id uuid references public.organizations(id) on delete set null,
+  invite_token text unique,
+  delivery_method text not null default 'email' check (delivery_method in ('email','link')),
+  last_sent_at timestamptz,
   created_at timestamptz not null default now()
 );
+alter table public.merchant_invites add column if not exists invite_token text unique;
+alter table public.merchant_invites add column if not exists delivery_method text not null default 'email';
+alter table public.merchant_invites add column if not exists last_sent_at timestamptz;
 alter table public.merchant_invites enable row level security;
 drop policy if exists "Platform admins manage invitations" on public.merchant_invites;
 create policy "Platform admins manage invitations" on public.merchant_invites for all using (public.is_platform_admin()) with check (public.is_platform_admin());
