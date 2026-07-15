@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
+import { listLocationMenuItems } from './menuStore.js';
 
 const fallback = [{ category: 'Appetizers', items: [['Vegetable Samosa', 9.89, 'Two crisp pastries with potatoes and green peas'], ['Paneer Pakora', 12.99, 'Lightly spiced and batter fried']] }];
 const cloudPhotos = {
@@ -33,24 +34,34 @@ const priceLabel = (price) => typeof price === 'number' ? `$${price.toFixed(2)}`
 export default function MenuCatalogue({ onAdd, location }) {
   const [categories, setCategories] = useState(fallback);
   const [cat, setCat] = useState('Appetizers');
+  const [customItems, setCustomItems] = useState([]);
 
   useEffect(() => {
     fetch('/data/ambar-menu.json').then((response) => response.ok ? response.json() : Promise.reject()).then((data) => {
       if (data.categories?.length) { setCategories(data.categories); setCat(data.categories[0].category); }
     }).catch(() => {});
   }, []);
+  useEffect(() => { listLocationMenuItems(location?.id).then(({ items }) => setCustomItems(items || [])); }, [location?.id]);
 
-  const active = useMemo(() => categories.find((item) => item.category === cat) || categories[0], [categories, cat]);
-  const visibleItems = active.items.filter((item) => !(location?.menuAvailability || []).includes(item.name || item[0]));
+  const mergedCategories = useMemo(() => {
+    const next = categories.map((item) => ({ ...item, items: [...item.items] }));
+    customItems.filter((item) => item.available).forEach((item) => {
+      const group = next.find((category) => category.category === item.category) || next.push({ category: item.category, items: [] }) && next[next.length - 1];
+      group.items.push(item);
+    });
+    return next;
+  }, [categories, customItems]);
+  const active = useMemo(() => mergedCategories.find((item) => item.category === cat) || mergedCategories[0], [mergedCategories, cat]);
+  const visibleItems = (active?.items || []).filter((item) => !(location?.menuAvailability || []).includes(item.name || item[0]));
   const heroPhoto = photoFor(active.category, active.category);
 
   return <section id="full-menu" className="catalogue">
     <div key={active.category} className="catalogue-hero" style={{ backgroundImage: `linear-gradient(90deg,#270b11bd,#270b1120),url('${heroPhoto}')` }}><div><p className="eyebrow">Ambar India menu</p><h2>Made fresh.<br />Made to share.</h2><span>{active.hours || "Chef's picks, made for your table"}</span><small>Choose a dish, add it to your order, and make it yours.</small></div><b className="catalogue-current">{active.category.replace(/^Lunch /, '')}</b></div>
     <div className="catalogue-body">
-      <aside className="catalogue-tabs" aria-label="Menu categories">{categories.map((item) => <button className={cat === item.category ? 'active' : ''} onClick={() => setCat(item.category)} key={item.category}>{item.category.replace(/^Lunch /, '')}</button>)}</aside>
+      <aside className="catalogue-tabs" aria-label="Menu categories">{mergedCategories.map((item) => <button className={cat === item.category ? 'active' : ''} onClick={() => setCat(item.category)} key={item.category}>{item.category.replace(/^Lunch /, '')}</button>)}</aside>
       <div className="catalogue-items" key={active.category}>
         <div className="menu-category-note">{active.note && <span>{active.note}</span>}<b>{visibleItems.length} items</b></div>
-        <div className="catalogue-grid">{visibleItems.map((item, index) => { const name = item.name || item[0]; const price = item.price ?? item[1]; const description = item.description || item[2]; const photo = photoFor(active.category, name, index); return <article className="menu-card" key={name}><div className="menu-card-photo" style={{ backgroundImage: `url('${photo}')` }} /><b>{name}</b><span>{priceLabel(price)}</span>{description && <p>{description}</p>}<button onClick={() => onAdd?.({ name, price: priceNumber(price) })}>Add to order +</button></article>; })}</div>
+        <div className="catalogue-grid">{visibleItems.map((item, index) => { const name = item.name || item[0]; const price = item.price ?? item[1]; const description = item.description || item[2]; const photo = item.image_url || photoFor(active.category, name, index); return <article className="menu-card" key={name}><div className="menu-card-photo" style={{ backgroundImage: `url('${photo}')` }} /><b>{name}</b><span>{priceLabel(price)}</span>{description && <p>{description}</p>}<button onClick={() => onAdd?.({ name, price: priceNumber(price) })}>Add to order +</button></article>; })}</div>
         <small>Availability is confirmed when an order is placed.</small>
       </div>
     </div>

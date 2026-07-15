@@ -1,0 +1,8 @@
+body .admin-sidebar{position:sticky!important}
+body .admin-sidebar .admin-signout{position:absolute!important;right:14px!important;bottom:18px!important;left:14px!important;margin:0!important;width:calc(100% - 28px)!important}
+body .admin-top-logout{position:fixed;top:18px;right:22px;z-index:1000;padding:9px 15px;border:1px solid #d7d7cf;border-radius:999px;background:#fff;color:#252522;font:700 11px 'DM Sans';box-shadow:0 8px 22px #17171418;cursor:pointer;transition:transform .2s,background .2s}
+body .admin-top-logout:hover{background:#20201e;color:#d9ff75;transform:translateY(-2px)}
+body .admin-in-app-notice{position:fixed;top:18px;left:50%;z-index:1100;display:flex;align-items:center;gap:18px;max-width:min(600px,calc(100vw - 40px));padding:14px 16px;border:1px solid #decf9c;border-radius:13px;background:#fff7d8;color:#5d481f;font:600 12px/1.4 'DM Sans';box-shadow:0 14px 36px #17171424;transform:translateX(-50%);animation:adminNoticeIn .25s ease both}
+body .admin-in-app-notice button{border:0;background:transparent;color:#7a5a1c;font-size:20px;line-height:1;cursor:pointer}
+@keyframes adminNoticeIn{from{opacity:0;transform:translate(-50%,-10px)}to{opacity:1;transform:translate(-50%,0)}}
+@media(max-width:900px){body .admin-sidebar{position:relative!important;height:auto!important}body .admin-sidebar .admin-signout{position:static!important;width:auto!important;margin:12px 10px 0!important}body .admin-top-logout{top:12px;right:14px}}
