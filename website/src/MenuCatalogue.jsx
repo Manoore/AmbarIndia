@@ -30,4 +30,28 @@ const photoFor = (category, name = '', index = 0) => {
 const priceNumber = (price) => Number(String(price).replace(/[^0-9.]/g, '')) || 0;
 const priceLabel = (price) => typeof price === 'number' ? `$${price.toFixed(2)}` : `$${price}`;
 
-export default function MenuCatalogue({ onAdd }) { const [categories, setCategories] = useState(fallback); const [cat, setCat] = useState('Appetizers'); useEffect(() => { fetch('/data/ambar-menu.json').then((response) => response.ok ? response.json() : Promise.reject()).then((data) => { if (data.categories?.length) { setCategories(data.categories); setCat(data.categories[0].category); } }).catch(() => {}); }, []); const active = useMemo(() => categories.find((item) => item.category === cat) || categories[0], [categories, cat]); const heroPhoto = photoFor(active.category, active.category); return <section id="full-menu" className="catalogue"><div className="catalogue-hero" style={{ backgroundImage: `linear-gradient(90deg,#270b11bd,#270b1120),url('${heroPhoto}')` }}><div><p className="eyebrow">Ambar India menu</p><h2>Made fresh.<br />Made to share.</h2><span>{active.hours || "Chef's picks, made for your table"}</span></div></div><div className="catalogue-tabs">{categories.map((item) => <button className={cat === item.category ? 'active' : ''} onClick={() => setCat(item.category)} key={item.category}>{item.category.replace(/^Lunch /, '')}</button>)}</div><div className="menu-category-note">{active.note && <span>{active.note}</span>}<b>{active.items.length} items</b></div><div className="catalogue-grid">{active.items.map((item, index) => { const name = item.name || item[0]; const price = item.price ?? item[1]; const description = item.description || item[2]; const photo = photoFor(active.category, name, index); return <article className="menu-card" key={name}><div className="menu-card-photo" style={{ backgroundImage: `url('${photo}')` }} /><b>{name}</b><span>{priceLabel(price)}</span>{description && <p>{description}</p>}<button onClick={() => onAdd?.({ name, price: priceNumber(price) })}>Add to order +</button></article>; })}</div><small>Availability is confirmed when an order is placed.</small></section>; }
+export default function MenuCatalogue({ onAdd }) {
+  const [categories, setCategories] = useState(fallback);
+  const [cat, setCat] = useState('Appetizers');
+
+  useEffect(() => {
+    fetch('/data/ambar-menu.json').then((response) => response.ok ? response.json() : Promise.reject()).then((data) => {
+      if (data.categories?.length) { setCategories(data.categories); setCat(data.categories[0].category); }
+    }).catch(() => {});
+  }, []);
+
+  const active = useMemo(() => categories.find((item) => item.category === cat) || categories[0], [categories, cat]);
+  const heroPhoto = photoFor(active.category, active.category);
+
+  return <section id="full-menu" className="catalogue">
+    <div className="catalogue-hero" style={{ backgroundImage: `linear-gradient(90deg,#270b11bd,#270b1120),url('${heroPhoto}')` }}><div><p className="eyebrow">Ambar India menu</p><h2>Made fresh.<br />Made to share.</h2><span>{active.hours || "Chef's picks, made for your table"}</span></div></div>
+    <div className="catalogue-body">
+      <aside className="catalogue-tabs" aria-label="Menu categories">{categories.map((item) => <button className={cat === item.category ? 'active' : ''} onClick={() => setCat(item.category)} key={item.category}>{item.category.replace(/^Lunch /, '')}</button>)}</aside>
+      <div className="catalogue-items">
+        <div className="menu-category-note">{active.note && <span>{active.note}</span>}<b>{active.items.length} items</b></div>
+        <div className="catalogue-grid">{active.items.map((item, index) => { const name = item.name || item[0]; const price = item.price ?? item[1]; const description = item.description || item[2]; const photo = photoFor(active.category, name, index); return <article className="menu-card" key={name}><div className="menu-card-photo" style={{ backgroundImage: `url('${photo}')` }} /><b>{name}</b><span>{priceLabel(price)}</span>{description && <p>{description}</p>}<button onClick={() => onAdd?.({ name, price: priceNumber(price) })}>Add to order +</button></article>; })}</div>
+        <small>Availability is confirmed when an order is placed.</small>
+      </div>
+    </div>
+  </section>;
+}
