@@ -12,6 +12,7 @@ create table if not exists public.locations (
   hours jsonb not null default '{}'::jsonb,
   reward_offer text not null default '',
   menu_note text not null default '',
+  menu_availability jsonb not null default '[]'::jsonb,
   is_active boolean not null default true,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()

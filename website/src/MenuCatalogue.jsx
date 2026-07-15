@@ -30,7 +30,7 @@ const photoFor = (category, name = '', index = 0) => {
 const priceNumber = (price) => Number(String(price).replace(/[^0-9.]/g, '')) || 0;
 const priceLabel = (price) => typeof price === 'number' ? `$${price.toFixed(2)}` : `$${price}`;
 
-export default function MenuCatalogue({ onAdd }) {
+export default function MenuCatalogue({ onAdd, location }) {
   const [categories, setCategories] = useState(fallback);
   const [cat, setCat] = useState('Appetizers');
 
@@ -41,6 +41,7 @@ export default function MenuCatalogue({ onAdd }) {
   }, []);
 
   const active = useMemo(() => categories.find((item) => item.category === cat) || categories[0], [categories, cat]);
+  const visibleItems = active.items.filter((item) => !(location?.menuAvailability || []).includes(item.name || item[0]));
   const heroPhoto = photoFor(active.category, active.category);
 
   return <section id="full-menu" className="catalogue">
@@ -48,8 +49,8 @@ export default function MenuCatalogue({ onAdd }) {
     <div className="catalogue-body">
       <aside className="catalogue-tabs" aria-label="Menu categories">{categories.map((item) => <button className={cat === item.category ? 'active' : ''} onClick={() => setCat(item.category)} key={item.category}>{item.category.replace(/^Lunch /, '')}</button>)}</aside>
       <div className="catalogue-items" key={active.category}>
-        <div className="menu-category-note">{active.note && <span>{active.note}</span>}<b>{active.items.length} items</b></div>
-        <div className="catalogue-grid">{active.items.map((item, index) => { const name = item.name || item[0]; const price = item.price ?? item[1]; const description = item.description || item[2]; const photo = photoFor(active.category, name, index); return <article className="menu-card" key={name}><div className="menu-card-photo" style={{ backgroundImage: `url('${photo}')` }} /><b>{name}</b><span>{priceLabel(price)}</span>{description && <p>{description}</p>}<button onClick={() => onAdd?.({ name, price: priceNumber(price) })}>Add to order +</button></article>; })}</div>
+        <div className="menu-category-note">{active.note && <span>{active.note}</span>}<b>{visibleItems.length} items</b></div>
+        <div className="catalogue-grid">{visibleItems.map((item, index) => { const name = item.name || item[0]; const price = item.price ?? item[1]; const description = item.description || item[2]; const photo = photoFor(active.category, name, index); return <article className="menu-card" key={name}><div className="menu-card-photo" style={{ backgroundImage: `url('${photo}')` }} /><b>{name}</b><span>{priceLabel(price)}</span>{description && <p>{description}</p>}<button onClick={() => onAdd?.({ name, price: priceNumber(price) })}>Add to order +</button></article>; })}</div>
         <small>Availability is confirmed when an order is placed.</small>
       </div>
     </div>
