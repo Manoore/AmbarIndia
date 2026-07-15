@@ -12,14 +12,15 @@ function Brand({ brand = defaultBrand }) { return <a className="brand" href="/">
 function ChefGuide() { return <a className="chef-guide" href="/menu" aria-label="Explore menu"><img src="/assets/ambar-chef.png" alt="Ambar India chef" /><span>Chef's picks<br /><b>Explore the menu</b></span></a>; }
 
 export default function App() {
+  const siteSlug = window.location.pathname.startsWith('/site/') ? window.location.pathname.split('/')[2] : 'ambar-india';
   const [open, setOpen] = useState(false);
   const [locations, setLocations] = useState(() => loadLocations());
   const [brand, setBrand] = useState(defaultBrand);
   const [selectedId, setSelectedId] = useState(() => localStorage.getItem('ambar-selected-location') || loadLocations()[0].id);
   const selected = locations.find((location) => location.id === selectedId) || locations[0];
   const choose = (id) => { localStorage.setItem('ambar-selected-location', id); setSelectedId(id); setOpen(false); };
-  useEffect(() => { const refresh = () => setLocations(loadLocations()); window.addEventListener('storage', refresh); loadCloudLocations().then(({ locations: cloud }) => { if (cloud) setLocations(cloud); }); return () => window.removeEventListener('storage', refresh); }, []);
-  useEffect(() => { loadBrandConfig().then((config) => { setBrand(config); document.documentElement.style.setProperty('--wine', config.primary_color); document.documentElement.style.setProperty('--saffron', config.accent_color); }); }, []);
+  useEffect(() => { const refresh = () => setLocations(loadLocations()); window.addEventListener('storage', refresh); return () => window.removeEventListener('storage', refresh); }, []);
+  useEffect(() => { loadBrandConfig(siteSlug).then((config) => { setBrand(config); document.documentElement.style.setProperty('--wine', config.primary_color); document.documentElement.style.setProperty('--saffron', config.accent_color); loadCloudLocations(config.id).then(({ locations: cloud }) => { if (cloud?.length) { setLocations(cloud); setSelectedId(cloud[0].id); } }); }); }, [siteSlug]);
   const useNearby = () => navigator.geolocation?.getCurrentPosition(() => choose(locations[0].id), () => {}, { timeout: 5000, maximumAge: 600000 });
   const services = selected.services.map((service) => service.replace('-', ' ')).join(' · ');
 

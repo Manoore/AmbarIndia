@@ -15,9 +15,11 @@ export function makeLocationId(name) { return `${name.toLowerCase().replace(/[^a
 const fromRow = (row) => ({ id: row.id, name: row.name, address: row.address, phone: row.phone, services: row.services || [], hours: row.hours || {}, rewardOffer: row.reward_offer || '', menuNote: row.menu_note || '', menuAvailability: row.menu_availability || [], organizationId: row.organization_id || null });
 const toRow = (location) => ({ id: location.id, name: location.name, address: location.address || '', phone: location.phone || '', services: location.services || [], hours: location.hours || {}, reward_offer: location.rewardOffer || '', menu_note: location.menuNote || '', menu_availability: location.menuAvailability || [], organization_id: location.organizationId || null, is_active: true });
 
-export async function loadCloudLocations() {
+export async function loadCloudLocations(organizationId = null) {
   if (!supabase) return { locations: null, error: 'Supabase environment values are missing.' };
-  const { data, error } = await supabase.from('locations').select('*').eq('is_active', true).order('name');
+  let query = supabase.from('locations').select('*').eq('is_active', true).order('name');
+  if (organizationId) query = query.eq('organization_id', organizationId);
+  const { data, error } = await query;
   return { locations: error || !data?.length ? null : data.map(fromRow), error: error?.message || null };
 }
 

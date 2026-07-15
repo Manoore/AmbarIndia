@@ -10,8 +10,9 @@ const rootElement = document.getElementById('root');
 try {
   const isAdmin = window.location.pathname.startsWith('/admin');
   const isMenu = window.location.pathname.startsWith('/menu');
+  const isSite = window.location.pathname.startsWith('/site/');
   const isPlatform = window.location.pathname.startsWith('/platform');
-  const Screen = isPlatform ? PlatformDashboard : isAdmin ? AdminDashboard : isMenu ? MenuPage : App;
+  const Screen = isPlatform ? PlatformDashboard : isAdmin ? AdminDashboard : isMenu ? MenuPage : isSite ? App : App;
   createRoot(rootElement).render(<StrictMode><Screen /></StrictMode>);
 } catch (error) {
   console.error('Ambar application failed to start.', error);
