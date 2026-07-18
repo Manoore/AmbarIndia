@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'backend/app_backend.dart';
 
-void main() => runApp(const AmbarDirectApp());
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await AppBackend.instance.initialize();
+  runApp(const AmbarDirectApp());
+}
 
 const _maroon = Color(0xFF641B23);
 const _gold = Color(0xFFE9B44C);
@@ -30,6 +35,9 @@ class ManagerShell extends StatefulWidget {
 class _ManagerShellState extends State<ManagerShell> {
   int section = 0;
   String location = 'Clifton';
+  StaffContext? staff;
+  List<LocationRecord> liveLocations = const [];
+  bool loadingLiveData = false;
   final sections = const [
     'Overview',
     'POS',
@@ -50,6 +58,35 @@ class _ManagerShellState extends State<ManagerShell> {
   ];
 
   @override
+  void initState() {
+    super.initState();
+    _loadLiveContext();
+  }
+
+  Future<void> _loadLiveContext() async {
+    if (!AppBackend.instance.configured) return;
+    final client = AppBackend.instance.client;
+    final user = client?.auth.currentUser;
+    if (client == null || user == null) return;
+    setState(() => loadingLiveData = true);
+    try {
+      final loadedStaff = await loadStaffContext(client, user);
+      final loadedLocations = await loadLocations(client,
+          organizationId: loadedStaff?.organizationId);
+      if (!mounted) return;
+      setState(() {
+        staff = loadedStaff;
+        liveLocations = loadedLocations;
+        if (loadedLocations.isNotEmpty)
+          location =
+              loadedLocations.first.name.replaceFirst('Ambar India ', '');
+      });
+    } finally {
+      if (mounted) setState(() => loadingLiveData = false);
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     final compact = MediaQuery.sizeOf(context).width < 700;
     final content = _page();
@@ -57,14 +94,25 @@ class _ManagerShellState extends State<ManagerShell> {
       appBar: AppBar(
         title: Text('Manager · ${sections[section]}'),
         actions: [
+          if (loadingLiveData)
+            const Padding(
+                padding: EdgeInsets.only(right: 12),
+                child: SizedBox(
+                    width: 16,
+                    height: 16,
+                    child: CircularProgressIndicator(strokeWidth: 2))),
           DropdownButtonHideUnderline(
             child: DropdownButton<String>(
               value: location,
-              items: const [
-                DropdownMenuItem(value: 'Clifton', child: Text('Clifton')),
-                DropdownMenuItem(value: 'Downtown', child: Text('Downtown')),
-                DropdownMenuItem(value: 'Events', child: Text('Events')),
-              ],
+              items: (liveLocations.isEmpty
+                      ? const ['Clifton', 'Downtown', 'Events']
+                      : liveLocations
+                          .map((item) =>
+                              item.name.replaceFirst('Ambar India ', ''))
+                          .toList())
+                  .map((name) =>
+                      DropdownMenuItem(value: name, child: Text(name)))
+                  .toList(),
               onChanged: (value) => setState(() => location = value!),
             ),
           ),
