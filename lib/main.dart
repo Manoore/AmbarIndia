@@ -280,11 +280,11 @@ class _ManagerShellState extends State<ManagerShell> {
       case 1:
         return const PosPreview();
       case 2:
-        return const KitchenPreview();
+        return LiveKitchenPreview(locationId: _selectedLocationId);
       case 3:
         return const AnalyticsPreview();
       case 4:
-        return const ReservationsPreview();
+        return LiveReservationsPreview(locationId: _selectedLocationId);
       case 5:
         return MenuPreview(locationId: _selectedLocationId);
       case 6:
@@ -428,6 +428,94 @@ class KitchenPreview extends StatelessWidget {
       );
 }
 
+class LiveKitchenPreview extends StatefulWidget {
+  const LiveKitchenPreview({super.key, this.locationId});
+  final String? locationId;
+  @override
+  State<LiveKitchenPreview> createState() => _LiveKitchenPreviewState();
+}
+
+class _LiveKitchenPreviewState extends State<LiveKitchenPreview> {
+  List<OrderRecord> orders = const [];
+  bool loading = false;
+  @override
+  void initState() {
+    super.initState();
+    _load();
+  }
+
+  @override
+  void didUpdateWidget(covariant LiveKitchenPreview oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.locationId != widget.locationId) _load();
+  }
+
+  Future<void> _load() async {
+    if (!AppBackend.instance.configured || widget.locationId == null) return;
+    final client = AppBackend.instance.client;
+    if (client == null) return;
+    setState(() => loading = true);
+    try {
+      final next = await loadOrders(client, locationId: widget.locationId);
+      if (mounted) setState(() => orders = next);
+    } catch (_) {
+    } finally {
+      if (mounted) setState(() => loading = false);
+    }
+  }
+
+  Future<void> _advance(OrderRecord order) async {
+    final next = order.status == 'new'
+        ? 'preparing'
+        : order.status == 'preparing'
+            ? 'ready'
+            : 'completed';
+    final client = AppBackend.instance.client;
+    if (client == null) return;
+    await updateOrderStatus(client, order.id, next);
+    await _load();
+  }
+
+  @override
+  Widget build(BuildContext context) => ListView(children: [
+        const _SectionIntro(
+            eyebrow: 'Kitchen display',
+            title: 'Keep every order moving',
+            detail: 'Tap a ticket to advance it through service.'),
+        if (loading) const LinearProgressIndicator(),
+        _Panel(
+            title: orders.isEmpty
+                ? 'Live tickets'
+                : '${orders.length} live orders',
+            children: orders.isEmpty
+                ? const [
+                    ListTile(
+                        title: Text('No live tickets'),
+                        subtitle:
+                            Text('New POS and online orders will appear here.'))
+                  ]
+                : [
+                    for (final order in orders.take(30))
+                      ListTile(
+                          leading: CircleAvatar(
+                              child: Text(order.status == 'new' ? '!' : '✓')),
+                          title: Text(order.reference),
+                          subtitle: Text(
+                              '${order.guestName} · ${order.type} · ${order.status}'),
+                          trailing: order.status == 'completed'
+                              ? const Icon(Icons.check_circle,
+                                  color: Colors.green)
+                              : FilledButton(
+                                  onPressed: () => _advance(order),
+                                  child: Text(order.status == 'new'
+                                      ? 'Start'
+                                      : order.status == 'preparing'
+                                          ? 'Ready'
+                                          : 'Complete')))
+                  ]),
+      ]);
+}
+
 class AnalyticsPreview extends StatelessWidget {
   const AnalyticsPreview({super.key});
   @override
@@ -455,6 +543,86 @@ class AnalyticsPreview extends StatelessWidget {
           ),
         ],
       );
+}
+
+class LiveReservationsPreview extends StatefulWidget {
+  const LiveReservationsPreview({super.key, this.locationId});
+  final String? locationId;
+  @override
+  State<LiveReservationsPreview> createState() =>
+      _LiveReservationsPreviewState();
+}
+
+class _LiveReservationsPreviewState extends State<LiveReservationsPreview> {
+  List<ReservationRecord> reservations = const [];
+  bool loading = false;
+  @override
+  void initState() {
+    super.initState();
+    _load();
+  }
+
+  @override
+  void didUpdateWidget(covariant LiveReservationsPreview oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.locationId != widget.locationId) _load();
+  }
+
+  Future<void> _load() async {
+    if (!AppBackend.instance.configured || widget.locationId == null) return;
+    final client = AppBackend.instance.client;
+    if (client == null) return;
+    setState(() => loading = true);
+    try {
+      final next = await loadReservations(client, widget.locationId!);
+      if (mounted) setState(() => reservations = next);
+    } catch (_) {
+    } finally {
+      if (mounted) setState(() => loading = false);
+    }
+  }
+
+  Future<void> _confirm(ReservationRecord item) async {
+    final client = AppBackend.instance.client;
+    if (client == null) return;
+    await updateReservationStatus(
+        client, item.id, item.status == 'pending' ? 'confirmed' : 'seated');
+    await _load();
+  }
+
+  @override
+  Widget build(BuildContext context) => ListView(children: [
+        const _SectionIntro(
+            eyebrow: 'Guest book',
+            title: 'Reservations at a glance',
+            detail: 'Confirm guests and keep the floor plan ready.'),
+        if (loading) const LinearProgressIndicator(),
+        _Panel(
+            title: reservations.isEmpty
+                ? 'Today'
+                : '${reservations.length} reservations',
+            children: reservations.isEmpty
+                ? const [
+                    ListTile(
+                        title: Text('No reservations yet'),
+                        subtitle: Text('New guest requests will appear here.'))
+                  ]
+                : [
+                    for (final item in reservations)
+                      ListTile(
+                          title: Text(
+                              '${item.guestName} · ${item.partySize} guests'),
+                          subtitle: Text('${item.date} · ${item.time}'),
+                          trailing: item.status == 'completed'
+                              ? const Icon(Icons.check_circle,
+                                  color: Colors.green)
+                              : FilledButton(
+                                  onPressed: () => _confirm(item),
+                                  child: Text(item.status == 'pending'
+                                      ? 'Confirm'
+                                      : 'Seat')))
+                  ]),
+      ]);
 }
 
 class ReservationsPreview extends StatelessWidget {

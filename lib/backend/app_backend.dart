@@ -90,6 +90,50 @@ class MenuItemRecord {
   final bool available;
 }
 
+class OrderRecord {
+  const OrderRecord({
+    required this.id,
+    required this.reference,
+    required this.locationId,
+    required this.type,
+    required this.source,
+    required this.status,
+    required this.guestName,
+    required this.tableNumber,
+    required this.total,
+    required this.paymentStatus,
+    required this.createdAt,
+  });
+
+  final String id;
+  final String reference;
+  final String locationId;
+  final String type;
+  final String source;
+  final String status;
+  final String guestName;
+  final String? tableNumber;
+  final double total;
+  final String paymentStatus;
+  final DateTime? createdAt;
+}
+
+class ReservationRecord {
+  const ReservationRecord(
+      {required this.id,
+      required this.guestName,
+      required this.date,
+      required this.time,
+      required this.partySize,
+      required this.status});
+  final String id;
+  final String guestName;
+  final String date;
+  final String time;
+  final int partySize;
+  final String status;
+}
+
 Future<List<LocationRecord>> loadLocations(SupabaseClient client,
     {String? organizationId}) async {
   final rows = organizationId == null
@@ -134,4 +178,111 @@ Future<List<MenuItemRecord>> loadMenuItems(
             available: row['available'] as bool? ?? true,
           ))
       .toList();
+}
+
+Future<List<OrderRecord>> loadOrders(SupabaseClient client,
+    {String? locationId}) async {
+  var query = client.from('orders').select(
+      'id,order_reference,location_id,order_type,order_source,status,guest_name,table_number,total,payment_status,created_at');
+  if (locationId != null) query = query.eq('location_id', locationId);
+  final rows = await query.order('created_at', ascending: false).limit(200);
+  return (rows as List)
+      .map((row) => OrderRecord(
+            id: row['id'].toString(),
+            reference:
+                row['order_reference'] as String? ?? row['id'].toString(),
+            locationId: row['location_id'].toString(),
+            type: row['order_type'] as String? ?? 'dine-in',
+            source: row['order_source'] as String? ?? 'online',
+            status: row['status'] as String? ?? 'new',
+            guestName: row['guest_name'] as String? ?? 'Walk-in guest',
+            tableNumber: row['table_number'] as String?,
+            total: (row['total'] as num?)?.toDouble() ?? 0,
+            paymentStatus: row['payment_status'] as String? ?? 'pending',
+            createdAt: DateTime.tryParse(row['created_at'].toString()),
+          ))
+      .toList();
+}
+
+Future<void> updateOrderStatus(
+    SupabaseClient client, String id, String status) async {
+  await client.from('orders').update({'status': status}).eq('id', id);
+}
+
+Future<List<ReservationRecord>> loadReservations(
+    SupabaseClient client, String locationId) async {
+  final rows = await client
+      .from('reservations')
+      .select(
+          'id,guest_name,reservation_date,reservation_time,party_size,status')
+      .eq('location_id', locationId)
+      .order('reservation_date')
+      .order('reservation_time');
+  return (rows as List)
+      .map((row) => ReservationRecord(
+            id: row['id'].toString(),
+            guestName: row['guest_name'] as String? ?? 'Guest',
+            date: row['reservation_date'].toString(),
+            time: row['reservation_time'] as String? ?? '',
+            partySize: (row['party_size'] as num?)?.toInt() ?? 1,
+            status: row['status'] as String? ?? 'pending',
+          ))
+      .toList();
+}
+
+Future<void> updateReservationStatus(
+    SupabaseClient client, String id, String status) async {
+  await client.from('reservations').update({'status': status}).eq('id', id);
+}
+
+Future<OrderRecord?> createWalkInOrder({
+  required SupabaseClient client,
+  required String locationId,
+  required String orderType,
+  required List<MenuItemRecord> items,
+  String? guestName,
+  String? tableNumber,
+}) async {
+  if (items.isEmpty) return null;
+  final subtotal = items.fold<double>(0, (sum, item) => sum + item.price);
+  final reference = 'AD-${DateTime.now().millisecondsSinceEpoch}';
+  final row = await client
+      .from('orders')
+      .insert({
+        'location_id': locationId,
+        'order_type': orderType,
+        'order_source': 'walk-in',
+        'guest_name': guestName,
+        'table_number': tableNumber,
+        'subtotal': subtotal,
+        'total': subtotal,
+        'payment_method': 'pay-at-counter',
+        'payment_status': 'pending',
+        'order_reference': reference,
+        'access_token': reference,
+      })
+      .select()
+      .single();
+  final orderId = row['id'].toString();
+  await client.from('order_items').insert(items
+      .map((item) => {
+            'order_id': orderId,
+            'menu_item_id': item.id,
+            'name': item.name,
+            'unit_price': item.price,
+            'quantity': 1,
+          })
+      .toList());
+  return OrderRecord(
+      id: orderId,
+      reference: reference,
+      locationId: locationId,
+      type: orderType,
+      source: 'walk-in',
+      status: 'new',
+      guestName: guestName ?? 'Walk-in guest',
+      tableNumber: tableNumber,
+      total: subtotal,
+      paymentStatus: 'pending',
+      createdAt: DateTime.now());
 }
