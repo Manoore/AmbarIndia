@@ -282,7 +282,7 @@ class _ManagerShellState extends State<ManagerShell> {
       case 2:
         return LiveKitchenPreview(locationId: _selectedLocationId);
       case 3:
-        return const AnalyticsPreview();
+        return LiveAnalyticsPreview(locationId: _selectedLocationId);
       case 4:
         return LiveReservationsPreview(locationId: _selectedLocationId);
       case 5:
@@ -660,6 +660,88 @@ class _LiveKitchenPreviewState extends State<LiveKitchenPreview> {
                                           : 'Complete')))
                   ]),
       ]);
+}
+
+class LiveAnalyticsPreview extends StatefulWidget {
+  const LiveAnalyticsPreview({super.key, this.locationId});
+  final String? locationId;
+  @override
+  State<LiveAnalyticsPreview> createState() => _LiveAnalyticsPreviewState();
+}
+
+class _LiveAnalyticsPreviewState extends State<LiveAnalyticsPreview> {
+  List<OrderRecord> orders = const [];
+  bool loading = false;
+  @override
+  void initState() {
+    super.initState();
+    _load();
+  }
+
+  @override
+  void didUpdateWidget(covariant LiveAnalyticsPreview oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.locationId != widget.locationId) _load();
+  }
+
+  Future<void> _load() async {
+    if (!AppBackend.instance.configured || widget.locationId == null) return;
+    final client = AppBackend.instance.client;
+    if (client == null) return;
+    setState(() => loading = true);
+    try {
+      final next = await loadOrders(client, locationId: widget.locationId);
+      if (mounted) setState(() => orders = next);
+    } catch (_) {
+    } finally {
+      if (mounted) setState(() => loading = false);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final paid = orders.where((item) => item.paymentStatus == 'paid').toList();
+    final sales = paid.fold<double>(0, (sum, item) => sum + item.total);
+    final online = orders.where((item) => item.source == 'online').length;
+    final walkIn = orders.where((item) => item.source == 'walk-in').length;
+    final cooking = orders
+        .where((item) => item.status == 'new' || item.status == 'preparing')
+        .length;
+    return ListView(children: [
+      const _SectionIntro(
+          eyebrow: 'Live reporting',
+          title: 'Know what needs attention',
+          detail: 'Metrics update from the selected location.'),
+      if (loading) const LinearProgressIndicator(),
+      GridView.count(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          crossAxisCount: MediaQuery.sizeOf(context).width > 800 ? 4 : 2,
+          childAspectRatio: 1.4,
+          crossAxisSpacing: 10,
+          mainAxisSpacing: 10,
+          children: [
+            _MetricCard('Paid sales', '\$${sales.toStringAsFixed(2)}',
+                Icons.payments_outlined),
+            _MetricCard(
+                'Orders', '${orders.length}', Icons.receipt_long_outlined),
+            _MetricCard('Online · walk-in', '$online · $walkIn',
+                Icons.storefront_outlined),
+            _MetricCard('Kitchen now', '$cooking',
+                Icons.local_fire_department_outlined),
+          ]),
+      const SizedBox(height: 16),
+      _Panel(title: 'Order stages', children: [
+        for (final stage in ['new', 'preparing', 'ready', 'completed'])
+          ListTile(
+              title: Text(stage == 'preparing'
+                  ? 'Cooking'
+                  : stage[0].toUpperCase() + stage.substring(1)),
+              trailing: Text(
+                  '${orders.where((item) => item.status == stage).length}'))
+      ]),
+    ]);
+  }
 }
 
 class AnalyticsPreview extends StatelessWidget {
