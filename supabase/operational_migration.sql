@@ -38,7 +38,10 @@ create index if not exists reservations_location_date_idx on public.reservations
 
 create or replace function public.track_order(p_order_reference text, p_access_token text)
 returns setof public.orders language sql security definer set search_path = public as $$
-  select * from public.orders where order_reference = p_order_reference and access_token = p_access_token limit 1;
+  select * from public.orders
+  where order_reference::text = p_order_reference
+    and access_token::text = p_access_token
+  limit 1;
 $$;
 revoke all on function public.track_order(text, text) from public;
 grant execute on function public.track_order(text, text) to anon, authenticated;
