@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'backend/app_backend.dart';
@@ -584,10 +586,18 @@ class LiveKitchenPreview extends StatefulWidget {
 class _LiveKitchenPreviewState extends State<LiveKitchenPreview> {
   List<OrderRecord> orders = const [];
   bool loading = false;
+  Timer? refreshTimer;
   @override
   void initState() {
     super.initState();
     _load();
+    refreshTimer = Timer.periodic(const Duration(seconds: 15), (_) => _load());
+  }
+
+  @override
+  void dispose() {
+    refreshTimer?.cancel();
+    super.dispose();
   }
 
   @override
@@ -672,10 +682,18 @@ class LiveAnalyticsPreview extends StatefulWidget {
 class _LiveAnalyticsPreviewState extends State<LiveAnalyticsPreview> {
   List<OrderRecord> orders = const [];
   bool loading = false;
+  Timer? refreshTimer;
   @override
   void initState() {
     super.initState();
     _load();
+    refreshTimer = Timer.periodic(const Duration(seconds: 30), (_) => _load());
+  }
+
+  @override
+  void dispose() {
+    refreshTimer?.cancel();
+    super.dispose();
   }
 
   @override
@@ -784,10 +802,18 @@ class LiveReservationsPreview extends StatefulWidget {
 class _LiveReservationsPreviewState extends State<LiveReservationsPreview> {
   List<ReservationRecord> reservations = const [];
   bool loading = false;
+  Timer? refreshTimer;
   @override
   void initState() {
     super.initState();
     _load();
+    refreshTimer = Timer.periodic(const Duration(seconds: 30), (_) => _load());
+  }
+
+  @override
+  void dispose() {
+    refreshTimer?.cancel();
+    super.dispose();
   }
 
   @override
