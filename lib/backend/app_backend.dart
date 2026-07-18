@@ -68,6 +68,28 @@ class LocationRecord {
   final List<String> services;
 }
 
+class MenuItemRecord {
+  const MenuItemRecord({
+    required this.id,
+    required this.locationId,
+    required this.category,
+    required this.name,
+    required this.description,
+    required this.price,
+    required this.imageUrl,
+    required this.available,
+  });
+
+  final String id;
+  final String locationId;
+  final String category;
+  final String name;
+  final String description;
+  final double price;
+  final String? imageUrl;
+  final bool available;
+}
+
 Future<List<LocationRecord>> loadLocations(SupabaseClient client,
     {String? organizationId}) async {
   final rows = organizationId == null
@@ -88,5 +110,28 @@ Future<List<LocationRecord>> loadLocations(SupabaseClient client,
           name: row['name'] as String,
           address: row['address'] as String? ?? '',
           services: List<String>.from(row['services'] ?? const [])))
+      .toList();
+}
+
+Future<List<MenuItemRecord>> loadMenuItems(
+    SupabaseClient client, String locationId) async {
+  final rows = await client
+      .from('menu_items')
+      .select(
+          'id,location_id,category,name,description,price,image_url,available')
+      .eq('location_id', locationId)
+      .order('category')
+      .order('name');
+  return (rows as List)
+      .map((row) => MenuItemRecord(
+            id: row['id'].toString(),
+            locationId: row['location_id'].toString(),
+            category: row['category'] as String? ?? 'Menu',
+            name: row['name'] as String? ?? 'Menu item',
+            description: row['description'] as String? ?? '',
+            price: (row['price'] as num?)?.toDouble() ?? 0,
+            imageUrl: row['image_url'] as String?,
+            available: row['available'] as bool? ?? true,
+          ))
       .toList();
 }

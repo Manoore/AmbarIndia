@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'backend/app_backend.dart';
 
 Future<void> main() async {
@@ -23,6 +24,117 @@ class RestaurantLocation {
   final String neighborhood;
   final String address;
   final List<String> services;
+}
+
+class ManagerEntry extends StatefulWidget {
+  const ManagerEntry({super.key});
+
+  @override
+  State<ManagerEntry> createState() => _ManagerEntryState();
+}
+
+class _ManagerEntryState extends State<ManagerEntry> {
+  final email = TextEditingController();
+  final password = TextEditingController();
+  String message = '';
+  bool submitting = false;
+
+  @override
+  void dispose() {
+    email.dispose();
+    password.dispose();
+    super.dispose();
+  }
+
+  Future<void> signIn() async {
+    if (!AppBackend.instance.configured) {
+      if (mounted) {
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (_) => const ManagerShell()));
+      }
+      return;
+    }
+    final client = AppBackend.instance.client;
+    if (client == null) return;
+    setState(() {
+      submitting = true;
+      message = '';
+    });
+    try {
+      await client.auth.signInWithPassword(
+          email: email.text.trim(), password: password.text);
+      if (!mounted) return;
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (_) => const ManagerShell()));
+    } on AuthException catch (error) {
+      if (mounted) setState(() => message = error.message);
+    } finally {
+      if (mounted) setState(() => submitting = false);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (!AppBackend.instance.configured) return const ManagerShell();
+    return Scaffold(
+      body: Center(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(24),
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 420),
+            child: Card(
+              child: Padding(
+                padding: const EdgeInsets.all(24),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text('MANAGER ACCESS',
+                        style: TextStyle(
+                            color: _maroon,
+                            fontWeight: FontWeight.bold,
+                            letterSpacing: 1.5)),
+                    const SizedBox(height: 8),
+                    const Text('Sign in to your workspace',
+                        style: TextStyle(
+                            fontSize: 27, fontWeight: FontWeight.w800)),
+                    const SizedBox(height: 22),
+                    TextField(
+                        controller: email,
+                        keyboardType: TextInputType.emailAddress,
+                        decoration: const InputDecoration(
+                            labelText: 'Email', border: OutlineInputBorder())),
+                    const SizedBox(height: 12),
+                    TextField(
+                        controller: password,
+                        obscureText: true,
+                        decoration: const InputDecoration(
+                            labelText: 'Password',
+                            border: OutlineInputBorder())),
+                    if (message.isNotEmpty)
+                      Padding(
+                          padding: const EdgeInsets.only(top: 10),
+                          child: Text(message,
+                              style: const TextStyle(color: Colors.red))),
+                    const SizedBox(height: 16),
+                    FilledButton(
+                        onPressed: submitting ? null : signIn,
+                        style: FilledButton.styleFrom(
+                            backgroundColor: _maroon,
+                            minimumSize: const Size.fromHeight(50)),
+                        child: Text(submitting ? 'Signing in…' : 'Sign in')),
+                    const SizedBox(height: 8),
+                    const Text(
+                        'Your role and location access are loaded from the workspace profile.',
+                        style: TextStyle(color: Colors.black54, fontSize: 12)),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 }
 
 class ManagerShell extends StatefulWidget {
@@ -174,12 +286,20 @@ class _ManagerShellState extends State<ManagerShell> {
       case 4:
         return const ReservationsPreview();
       case 5:
-        return const MenuPreview();
+        return MenuPreview(locationId: _selectedLocationId);
       case 6:
         return const SettingsPreview();
       default:
         return const OverviewPreview();
     }
+  }
+
+  String? get _selectedLocationId {
+    for (final item in liveLocations) {
+      if (item.name.replaceFirst('Ambar India ', '') == location)
+        return item.id;
+    }
+    return null;
   }
 }
 
@@ -264,7 +384,7 @@ class PosPreview extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 16),
-          const _Panel(
+          _Panel(
             title: 'Current bill',
             children: [
               ListTile(
@@ -366,8 +486,43 @@ class ReservationsPreview extends StatelessWidget {
       );
 }
 
-class MenuPreview extends StatelessWidget {
-  const MenuPreview({super.key});
+class MenuPreview extends StatefulWidget {
+  const MenuPreview({super.key, this.locationId});
+  final String? locationId;
+  @override
+  State<MenuPreview> createState() => _MenuPreviewState();
+}
+
+class _MenuPreviewState extends State<MenuPreview> {
+  List<MenuItemRecord> items = const [];
+  bool loading = false;
+  @override
+  void initState() {
+    super.initState();
+    _load();
+  }
+
+  @override
+  void didUpdateWidget(covariant MenuPreview oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.locationId != widget.locationId) _load();
+  }
+
+  Future<void> _load() async {
+    if (!AppBackend.instance.configured || widget.locationId == null) return;
+    final client = AppBackend.instance.client;
+    if (client == null) return;
+    setState(() => loading = true);
+    try {
+      final loaded = await loadMenuItems(client, widget.locationId!);
+      if (mounted) setState(() => items = loaded);
+    } catch (_) {
+      if (mounted) setState(() => items = const []);
+    } finally {
+      if (mounted) setState(() => loading = false);
+    }
+  }
+
   @override
   Widget build(BuildContext context) => ListView(
         children: [
@@ -376,8 +531,10 @@ class MenuPreview extends StatelessWidget {
             title: 'Keep every location current',
             detail: 'Edit availability, prices, categories, and custom dishes.',
           ),
-          const _Panel(
-            title: 'Popular items',
+          _Panel(
+            title: items.isEmpty
+                ? 'Popular items'
+                : '${items.length} live menu items',
             children: [
               ListTile(
                 title: Text('Chicken Tikka Masala'),
@@ -706,7 +863,7 @@ class LocationScreen extends StatelessWidget {
               OutlinedButton.icon(
                 onPressed: () => Navigator.of(
                   context,
-                ).push(MaterialPageRoute(builder: (_) => const ManagerShell())),
+                ).push(MaterialPageRoute(builder: (_) => const ManagerEntry())),
                 icon: const Icon(Icons.dashboard_customize_outlined),
                 label: const Text('Open manager preview'),
               ),
