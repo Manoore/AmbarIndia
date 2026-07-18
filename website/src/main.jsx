@@ -12,6 +12,7 @@ import './CounterPOS.css';
 import './PlatformOperations.css';
 import './PlatformNavigation.css';
 import './InviteLink.css';
+import './AdminProgress.css';
 import { PlatformSectionLinks } from './PlatformOperations.jsx';
 
 const rootElement = document.getElementById('root');
