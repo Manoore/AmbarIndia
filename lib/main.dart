@@ -278,7 +278,7 @@ class _ManagerShellState extends State<ManagerShell> {
   Widget _page() {
     switch (section) {
       case 1:
-        return const PosPreview();
+        return LivePosPreview(locationId: _selectedLocationId);
       case 2:
         return LiveKitchenPreview(locationId: _selectedLocationId);
       case 3:
@@ -347,6 +347,152 @@ class OverviewPreview extends StatelessWidget {
           ),
         ],
       );
+}
+
+class LivePosPreview extends StatefulWidget {
+  const LivePosPreview({super.key, this.locationId});
+  final String? locationId;
+  @override
+  State<LivePosPreview> createState() => _LivePosPreviewState();
+}
+
+class _LivePosPreviewState extends State<LivePosPreview> {
+  List<MenuItemRecord> menu = const [];
+  List<MenuItemRecord> cart = const [];
+  OrderRecord? openOrder;
+  bool loading = false;
+  String message = '';
+  String guest = '';
+  String table = '1';
+
+  @override
+  void initState() {
+    super.initState();
+    _load();
+  }
+
+  @override
+  void didUpdateWidget(covariant LivePosPreview oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.locationId != widget.locationId) _load();
+  }
+
+  Future<void> _load() async {
+    if (!AppBackend.instance.configured || widget.locationId == null) return;
+    final client = AppBackend.instance.client;
+    if (client == null) return;
+    setState(() => loading = true);
+    try {
+      final next = await loadMenuItems(client, widget.locationId!);
+      if (mounted)
+        setState(() => menu = next.where((item) => item.available).toList());
+    } catch (_) {
+      if (mounted) setState(() => message = 'Menu is unavailable.');
+    } finally {
+      if (mounted) setState(() => loading = false);
+    }
+  }
+
+  void _add(MenuItemRecord item) => setState(() => cart = [...cart, item]);
+  Future<void> _sendOrder() async {
+    final client = AppBackend.instance.client;
+    if (client == null || widget.locationId == null || cart.isEmpty) return;
+    setState(() => message = 'Sending order to the kitchen…');
+    try {
+      final order = await createWalkInOrder(
+          client: client,
+          locationId: widget.locationId!,
+          orderType: 'dine-in',
+          items: cart,
+          guestName: guest.isEmpty ? null : guest,
+          tableNumber: table);
+      if (mounted)
+        setState(() {
+          openOrder = order;
+          message = order == null
+              ? 'Could not create the order.'
+              : '${order.reference} sent to the kitchen.';
+        });
+    } catch (_) {
+      if (mounted) setState(() => message = 'Could not create the order.');
+    }
+  }
+
+  Future<void> _pay() async {
+    final client = AppBackend.instance.client;
+    if (client == null || openOrder == null) return;
+    await recordOrderPayment(client, openOrder!.id,
+        method: 'cash', amount: openOrder!.total);
+    if (mounted) setState(() => message = 'Test payment recorded.');
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final total = cart.fold<double>(0, (sum, item) => sum + item.price);
+    return ListView(children: [
+      const _SectionIntro(
+          eyebrow: 'Counter station',
+          title: 'Fast, clear ordering',
+          detail:
+              'Create a walk-in order and send it directly to the kitchen.'),
+      if (loading) const LinearProgressIndicator(),
+      TextField(
+          decoration: const InputDecoration(
+              labelText: 'Guest name', border: OutlineInputBorder()),
+          onChanged: (value) => guest = value),
+      const SizedBox(height: 10),
+      Wrap(spacing: 8, children: [
+        for (final item in ['1', '2', '3', '4', '5', '6'])
+          ChoiceChip(
+              label: Text('Table $item'),
+              selected: table == item,
+              onSelected: (_) => setState(() => table = item))
+      ]),
+      const SizedBox(height: 12),
+      _Panel(
+          title: 'Menu',
+          children: menu.isEmpty
+              ? const [
+                  ListTile(
+                      title: Text('No live menu items'),
+                      subtitle:
+                          Text('Add available menu items in the web manager.'))
+                ]
+              : [
+                  for (final item in menu.take(30))
+                    ListTile(
+                        title: Text(item.name),
+                        subtitle: Text('\$${item.price.toStringAsFixed(2)}'),
+                        trailing: FilledButton(
+                            onPressed: () => _add(item),
+                            child: const Text('Add')))
+                ]),
+      _Panel(
+          title: 'Current bill · \$${total.toStringAsFixed(2)}',
+          children: cart.isEmpty
+              ? const [ListTile(title: Text('Select items to begin.'))]
+              : [
+                  for (final item in cart)
+                    ListTile(
+                        title: Text(item.name),
+                        trailing: Text('\$${item.price.toStringAsFixed(2)}'))
+                ]),
+      Row(children: [
+        Expanded(
+            child: FilledButton(
+                onPressed:
+                    cart.isEmpty || openOrder != null ? null : _sendOrder,
+                child: const Text('Send to kitchen'))),
+        const SizedBox(width: 10),
+        Expanded(
+            child: FilledButton(
+                onPressed: openOrder == null ? null : _pay,
+                child: const Text('Record test payment')))
+      ]),
+      if (message.isNotEmpty)
+        Padding(padding: const EdgeInsets.only(top: 12), child: Text(message)),
+    ]);
+  }
 }
 
 class PosPreview extends StatelessWidget {

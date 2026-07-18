@@ -209,6 +209,15 @@ Future<void> updateOrderStatus(
   await client.from('orders').update({'status': status}).eq('id', id);
 }
 
+Future<void> recordOrderPayment(SupabaseClient client, String id,
+    {String method = 'cash', double? amount}) async {
+  await client.from('orders').update({
+    'payment_method': method,
+    'payment_status': 'paid',
+    if (amount != null) 'amount_tendered': amount,
+  }).eq('id', id);
+}
+
 Future<List<ReservationRecord>> loadReservations(
     SupabaseClient client, String locationId) async {
   final rows = await client
